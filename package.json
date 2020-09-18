@@ -1,11 +1,14 @@
 {
   "name": "@renft/monorepo",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "keywords": [
     "ethereum",
     "react",
-    "workspaces",
-    "yarn"
+    "yarn",
+    "marketplace",
+    "whitelabel",
+    "nft",
+    "erc721"
   ],
   "private": true,
   "scripts": {
