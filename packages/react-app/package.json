@@ -1,5 +1,5 @@
 {
-  "name": "@project/react-app",
+  "name": "@renft/react-app",
   "version": "1.0.0",
   "homepage": "./",
   "browserslist": {
@@ -15,7 +15,7 @@
     ]
   },
   "dependencies": {
-    "@project/contracts": "^1.0.0",
+    "@renft/contracts": "^1.0.0",
     "@ethersproject/contracts": "^5.0.1",
     "@ethersproject/providers": "^5.0.4",
     "@testing-library/dom": "^6.12.2",
