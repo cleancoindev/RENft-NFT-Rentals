@@ -50,19 +50,29 @@ const HistoryPage: React.FC = () => {
   return (
     <Card raised>
       <Container className={classes.yourHistory}>
-        <Typography className={classes.moveRight}>Your history</Typography>
+        <Typography className={classes.moveRight} variant="h6">
+          Your history
+        </Typography>
         <Divider />
       </Container>
       <Grid container spacing={0} className={classes.root}>
         <Grid item className="itemColumn">
-          <Typography className={classes.subName} variant="subtitle2">
+          <Typography
+            className={classes.subName}
+            variant="subtitle2"
+            color="textPrimary"
+          >
             Rented NFTs
           </Typography>
           <Divider />
         </Grid>
 
         <Grid item className="itemCont">
-          <Typography className={classes.subName} variant="subtitle2">
+          <Typography
+            className={classes.subName}
+            variant="subtitle2"
+            color="textSecondary"
+          >
             Overview
           </Typography>
           <Divider />
@@ -114,7 +124,11 @@ const HistoryPage: React.FC = () => {
         </Grid>
 
         <Grid item className="itemColumn">
-          <Typography className={classes.subName} variant="subtitle2">
+          <Typography
+            className={classes.subName}
+            variant="subtitle2"
+            color="textPrimary"
+          >
             Leased NFTs
           </Typography>
           <Divider />
