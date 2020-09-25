@@ -15,8 +15,8 @@ export const allProductsQuery = `{
       }
 }`;
 
-type Product = {
-  id: number;
+export type Product = {
+  id: string;
   address: string;
   owner: string;
   borrower: string;
@@ -28,7 +28,7 @@ type Product = {
 };
 
 // to be used in overview page code in overview => index.tsx
-export const productQuery = (nftId: number): string => {
+export const productQuery = (nftId: string): string => {
   const hex = web3.utils.toHex(nftId);
   return ` {
       product(id: "${hex}") {
