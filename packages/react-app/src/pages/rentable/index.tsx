@@ -67,7 +67,10 @@ const Rentable: React.FC<RentableProps> = () => {
   useEffect(() => {
     // Create an scoped async function in the hook
     const getProducts = async (): Promise<void> => {
-      const products: RentItem[] = await request(endpoint, allProductsQuery);
+      const { products }: { products: RentItem[] } = await request(
+        endpoint,
+        allProductsQuery
+      );
       setProducts(products);
     };
     getProducts();
