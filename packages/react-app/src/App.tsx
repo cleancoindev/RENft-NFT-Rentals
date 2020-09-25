@@ -85,8 +85,10 @@ const App: React.FC = () => (
       <Route path="/rent">
         <Rent rows={fakeRows} />
       </Route>
-      <Route path="/history">
-        <History />
+      <Route path="/">
+        <Box p={6}>
+          <History />
+        </Box>
       </Route>
     </Switch>
   </Router>

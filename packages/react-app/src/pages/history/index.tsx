@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
+import { Card } from '@material-ui/core';
 
 import CardInfoGreen from './CardInfoGreen';
 import CardInfoBlue from './CardInfoBlue';
@@ -36,11 +37,11 @@ const HistoryPage: React.FC = () => {
   const classes = useStyles();
 
   return (
-    <>
+    <Card raised>
       <Grid container spacing={0} className={classes.root}>
         <Grid item className="itemColumn">
           <Typography className={classes.subName} variant="subtitle2">
-            Rented NFT&#39;s
+            Rented NFTs
           </Typography>
           <Divider />
         </Grid>
@@ -51,14 +52,12 @@ const HistoryPage: React.FC = () => {
           </Typography>
           <Divider />
 
-          {/* Синяя карточка */}
           <CardInfoBlue
             type="minus"
             name="Current Rented"
             run={34}
             procent={25}
           />
-          {/* Зелёная карточка */}
           <CardInfoGreen
             type="plus"
             name="Current Leased"
@@ -106,7 +105,7 @@ const HistoryPage: React.FC = () => {
           <Divider />
         </Grid>
       </Grid>
-    </>
+    </Card>
   );
 };
 

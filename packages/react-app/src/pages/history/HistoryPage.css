@@ -2,7 +2,6 @@
   max-width: 140px;
   width: 100%;
   display: inline-block;
-  background-color: blue;
 }
 
 @media only screen and (max-width: 768px) {

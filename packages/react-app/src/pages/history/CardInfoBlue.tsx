@@ -1,8 +1,8 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import IconFull from '@material-ui/icons/Fullscreen';
+import Paper from '@material-ui/core/Paper';
 
 import CardProcent from './CardProcent';
 import CardContent from './CardContent';
@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     display: 'inline-flex',
     position: 'relative',
-    overflow: 'hidden',
+    overflow: 'visible',
   },
   iconArea: {
     minWidth: '48px',
@@ -23,8 +23,6 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(0.2),
     borderRadius: '7px',
     display: 'flex',
-    backgroundColor: '#DAFAF8',
-    color: '#0180FF',
     alignItems: 'center',
     justifyContent: 'center',
   },
