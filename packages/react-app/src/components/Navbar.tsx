@@ -5,11 +5,12 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Divider from '@material-ui/core/Divider';
+import { Box } from '@material-ui/core';
 
 import Button, { ButtonProps } from './Button';
 
 const useStyles = makeStyles(() => ({
-  app: { boxShadow: 'none' },
+  app: { boxShadow: 'none', display: 'flex' },
   title: {
     flexGrow: 1,
   },
@@ -27,12 +28,17 @@ const NavBar: React.FC<NavBarProps> = ({ buttonsList }) => {
       <Container>
         <Toolbar disableGutters>
           <Typography variant="h3">reNFT</Typography>
-          {buttonsList &&
-            buttonsList.map((btn) => (
-              <Button key={btn.label} label={btn.label} variant={btn.variant} />
-            ))}
+          <Box marginLeft="auto">
+            {buttonsList &&
+              buttonsList.map((btn) => (
+                <Button
+                  key={btn.label}
+                  label={btn.label}
+                  variant={btn.variant}
+                />
+              ))}
+          </Box>
         </Toolbar>
-
         <Divider />
       </Container>
     </AppBar>
