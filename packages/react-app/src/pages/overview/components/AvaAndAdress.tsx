@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import { deepOrange, green } from '@material-ui/core/colors';
-import AssignmentIcon from '@material-ui/icons/Assignment';
+import Pretty1 from '../../../assets/img/pretty1.svg';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,7 +27,7 @@ const AvaAndAdress: React.FC = () => {
   return (
     <div className={classes.root}>
       <Avatar variant="rounded" className={classes.rounded}>
-        <AssignmentIcon />
+        <img alt="lady hear me tonight" src={Pretty1} />
       </Avatar>
     </div>
   );
