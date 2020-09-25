@@ -64,14 +64,17 @@ const Rentable: React.FC<RentableProps> = ({ rows }) => {
           <div>
             <div>Account: {wallet.account}</div>
             <div>Balance: {wallet.balance}</div>
-            <button type="button" onClick={() => wallet.reset()}>
+            <button type="button" onClick={(): void => wallet.reset()}>
               disconnect
             </button>
           </div>
         ) : (
           <div>
             Connect:
-            <button type="button" onClick={() => wallet.connect('injected')}>
+            <button
+              type="button"
+              onClick={(): Promise<void> => wallet.connect('injected')}
+            >
               MetaMask
             </button>
           </div>
