@@ -5,7 +5,6 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
-import { allProductsQuery } from '../../config/graph';
 import { request } from 'graphql-request';
 
 import TableRow from '@material-ui/core/TableRow';
@@ -14,6 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import CardMedia from '@material-ui/core/CardMedia';
 import { Button, Card } from '@material-ui/core';
 import { useWallet } from 'use-wallet';
+import { allProductsQuery } from '../../config/graph';
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -44,6 +44,7 @@ const useStyles = makeStyles((theme) => ({
 export type RentItem = {
   id: string;
   name: string;
+  owner: string;
   img: string;
   price: number;
   address: string;
@@ -55,8 +56,8 @@ type RentableProps = {
   rows?: RentItem[];
 };
 
-const Rentable: React.FC<RentableProps> = ({ rows }) => {
-  const [allProducts, setProducts] = useState();
+const Rentable: React.FC<RentableProps> = () => {
+  const [allProducts, setProducts] = useState<RentItem[]>();
 
   const classes = useStyles();
   const wallet = useWallet();
@@ -66,7 +67,7 @@ const Rentable: React.FC<RentableProps> = ({ rows }) => {
   useEffect(() => {
     // Create an scoped async function in the hook
     const getProducts = async (): Promise<void> => {
-      const products = await request(endpoint, allProductsQuery);
+      const products: RentItem[] = await request(endpoint, allProductsQuery);
       setProducts(products);
     };
     getProducts();

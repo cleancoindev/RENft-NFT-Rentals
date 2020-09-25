@@ -27,8 +27,10 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(0, 0, 2, 0),
   },
 }));
- //Note -> path has to include the id i.e overview/1
+
 const Overview: React.FC = () => {
+  // Viraz: Note -> path has to include the id i.e overview/1
+  // Naz: Yup. Just the skeleton, the barebones for now
   const [product, setProduct] = useState();
   // dummy value this will coming from the state or path
   const nftId = '2';
@@ -42,11 +44,14 @@ const Overview: React.FC = () => {
       setProduct(nftInfo);
     };
     getProduct();
+    // Naz: this may fail on first fetch. And since this useEffect will only call once
+    // we may never fetch the product. We need to re-fetch if we haven't fetched
   }, []);
 
- // add the dynamic values here stored in userProfile object check graph dashboard or github schema to see what data is available
+  // add the dynamic values here stored in userProfile object check graph dashboard or github schema to see what data is available
   return (
     <Container>
+      <Box>{JSON.stringify(product)}</Box>
       <Card raised>
         <Box p={2}>
           <Grid container spacing={2} className={classes.root}>
@@ -60,7 +65,6 @@ const Overview: React.FC = () => {
                 <Button label="Return" variant="outlined" />
               </div>
             </Grid>
-            
             <Grid item xs={12} sm={4} md={3} lg={3}>
               <List className={classes.paper}>
                 <ListItem title="ID" text="1" />
