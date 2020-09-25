@@ -30,25 +30,33 @@ const useStyles = makeStyles((theme) => ({
     width: '35px',
     height: '35px',
   },
-  green: {
-    backgroundColor: '#81c784',
-  },
 }));
 
-type CardInfoBlue = {
+type CardInfoIcon = {
   name: string;
   run: number;
   procent: number;
   type: string;
+  icon?: string;
 };
 
-const CardInfoBlue: React.FC<CardInfoBlue> = ({ name, run, procent, type }) => {
+const CardInfoIcon: React.FC<CardInfoIcon> = ({
+  name,
+  run,
+  procent,
+  type,
+  icon,
+}) => {
   const classes = useStyles();
 
   return (
     <Paper className={classes.card}>
-      <Box className={`${classes.iconArea} ${classes.green}`}>
-        <IconFull className={classes.icon} />
+      <Box className={classes.iconArea}>
+        {icon ? (
+          <img src={icon} className={classes.icon} alt="rent or lease icon" />
+        ) : (
+          <IconFull className={classes.icon} />
+        )}
       </Box>
       <CardContent name={name} run={run} />
       <CardProcent procent={procent} type={type} />
@@ -56,4 +64,4 @@ const CardInfoBlue: React.FC<CardInfoBlue> = ({ name, run, procent, type }) => {
   );
 };
 
-export default CardInfoBlue;
+export default CardInfoIcon;

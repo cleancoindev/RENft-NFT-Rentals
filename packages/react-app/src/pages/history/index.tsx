@@ -5,11 +5,12 @@ import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import { Card } from '@material-ui/core';
 
-import CardInfoGreen from './CardInfoGreen';
-import CardInfoBlue from './CardInfoBlue';
+import CardInfoIcon from './CardInfoIcon';
 import CardGraphic from './CardGraphic';
 
 import './HistoryPage.css';
+import rentIcon from '../../assets/img/rent.svg';
+import leaseIcon from '../../assets/img/lease.svg';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -52,17 +53,19 @@ const HistoryPage: React.FC = () => {
           </Typography>
           <Divider />
 
-          <CardInfoBlue
+          <CardInfoIcon
             type="minus"
-            name="Current Rented"
+            name="# currently rented"
             run={34}
             procent={25}
+            icon={rentIcon}
           />
-          <CardInfoGreen
+          <CardInfoIcon
             type="plus"
-            name="Current Leased"
+            name="# currently leased"
             run={7}
             procent={70}
+            icon={leaseIcon}
           />
 
           <div>
@@ -72,7 +75,6 @@ const HistoryPage: React.FC = () => {
               color="#f54b42"
               startRun={25}
             />
-
             <CardGraphic
               id="twoGrapich"
               name="Total Interest:"
@@ -81,19 +83,19 @@ const HistoryPage: React.FC = () => {
             />
           </div>
 
-          {/* Синяя карточка */}
-          <CardInfoBlue
+          <CardInfoIcon
             type="minus"
-            name="Current Rented"
+            name="# completed rented"
             run={34}
             procent={25}
+            icon={rentIcon}
           />
-          {/* Зелёная карточка */}
-          <CardInfoGreen
+          <CardInfoIcon
             type="plus"
-            name="Current Leased"
+            name="# completed leased"
             run={7}
             procent={70}
+            icon={leaseIcon}
           />
         </Grid>
 
