@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import CardMedia from '@material-ui/core/CardMedia';
 import List from '@material-ui/core/List';
 import { Typography, Container, Card, Box } from '@material-ui/core';
-
+import { allProductsQuery } from '../../config/graph';
+import { request } from 'graphql-request';
 import ListItem from './ListItem';
 import Button from '../../components/Button';
 import PreviousRentals from './components/PreviousRentals';
@@ -29,6 +30,17 @@ const useStyles = makeStyles((theme) => ({
 
 const Overview: React.FC = () => {
   const classes = useStyles();
+  const endpoint =  'https://api.thegraph.com/subgraphs/name/rentft/rentftv1';
+
+  useEffect(() => {
+    // Create an scoped async function in the hook
+    async function getProducts() {
+      const tokenList = await request(endpoint, allProductsQuery);
+      console.log(tokenList)
+    }
+    getProducts();
+  }, []);
+
 
   return (
     <Container>
