@@ -11,9 +11,10 @@ const useStyles = makeStyles(() => ({
 export type ButtonProps = {
   variant?: ButtonVariant;
   label: string;
+  handleClick?: (e: React.SyntheticEvent) => void | Promise<void>;
 };
 
-const Button: React.FC<ButtonProps> = ({ variant, label }) => {
+const Button: React.FC<ButtonProps> = ({ variant, label, handleClick }) => {
   const classes = useStyles();
 
   return (
@@ -21,6 +22,7 @@ const Button: React.FC<ButtonProps> = ({ variant, label }) => {
       variant={variant}
       size="medium"
       className={classes.btnStyle}
+      onClick={handleClick}
     >
       {label}
     </MaterialButton>

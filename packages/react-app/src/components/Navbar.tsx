@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import Link from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Divider from '@material-ui/core/Divider';
 import { Box, Grid } from '@material-ui/core';
+import { useWallet } from 'use-wallet';
 
 import Button from './Button';
 
@@ -22,6 +23,14 @@ const useStyles = makeStyles((theme) => ({
 
 const NavBar: React.FC = () => {
   const classes = useStyles();
+  const wallet = useWallet<'injected'>();
+
+  const connectWallet = useCallback(
+    (): Promise<void> => wallet.connect('injected'),
+    [wallet]
+  );
+  const disconnectWallet = useCallback((): void => wallet.reset(), [wallet]);
+
   const preventDefault = (event: React.SyntheticEvent): void =>
     event.preventDefault();
 
@@ -60,7 +69,17 @@ const NavBar: React.FC = () => {
 
             <Box marginLeft="auto">
               <Button label="List NFTs" />
-              <Button label="Connect" variant="outlined" />
+              <Button
+                label={
+                  wallet.status !== 'disconnected' ? 'Disconnect' : 'Connect'
+                }
+                variant="outlined"
+                handleClick={
+                  wallet.status !== 'connected'
+                    ? connectWallet
+                    : disconnectWallet
+                }
+              />
             </Box>
           </Grid>
         </Toolbar>
