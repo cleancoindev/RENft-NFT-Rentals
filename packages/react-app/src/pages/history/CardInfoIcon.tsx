@@ -33,16 +33,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 type CardInfoIcon = {
-  name: string;
-  run: number;
+  cardContentText: string;
+  counter: number;
   procent: number;
   type: string;
   icon?: string;
 };
 
 const CardInfoIcon: React.FC<CardInfoIcon> = ({
-  name,
-  run,
+  cardContentText,
+  counter,
   procent,
   type,
   icon,
@@ -58,7 +58,7 @@ const CardInfoIcon: React.FC<CardInfoIcon> = ({
           <IconFull className={classes.icon} />
         )}
       </Box>
-      <CardContent name={name} run={run} />
+      <CardContent cardContentText={cardContentText} counter={counter} />
       <CardProcent procent={procent} type={type} />
     </Paper>
   );

@@ -17,11 +17,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 type CardContent = {
-  name: string;
-  run: number;
+  cardContentText: string;
+  counter: number;
 };
 
-const CardContent: React.FC<CardContent> = ({ name, run }) => {
+const CardContent: React.FC<CardContent> = ({ cardContentText, counter }) => {
   const classes = useStyles();
 
   return (
@@ -32,10 +32,11 @@ const CardContent: React.FC<CardContent> = ({ name, run }) => {
         variant="subtitle2"
         className={classes.name}
       >
-        {name}
+        {cardContentText}
       </Typography>
+      {/* WTF IS RUN!? */}
       <Typography noWrap align="left" className={classes.desc}>
-        {run}
+        {counter}
       </Typography>
     </div>
   );

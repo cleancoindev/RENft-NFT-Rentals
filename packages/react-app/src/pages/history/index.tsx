@@ -79,15 +79,15 @@ const HistoryPage: React.FC = () => {
 
           <CardInfoIcon
             type="minus"
-            name="# currently rented"
-            run={34}
+            cardContentText="# currently rented"
+            counter={34}
             procent={25}
             icon={rentIcon}
           />
           <CardInfoIcon
             type="plus"
-            name="# currently leased"
-            run={7}
+            cardContentText="# currently leased"
+            counter={7}
             procent={70}
             icon={leaseIcon}
           />
@@ -109,15 +109,15 @@ const HistoryPage: React.FC = () => {
 
           <CardInfoIcon
             type="minus"
-            name="# completed rented"
-            run={34}
+            cardContentText="# completed rented"
+            counter={34}
             procent={25}
             icon={rentIcon}
           />
           <CardInfoIcon
             type="plus"
-            name="# completed leased"
-            run={7}
+            cardContentText="# completed leased"
+            counter={7}
             procent={70}
             icon={leaseIcon}
           />
