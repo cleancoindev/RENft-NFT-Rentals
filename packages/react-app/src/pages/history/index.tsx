@@ -38,17 +38,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-/**
- * Генерируем статичную таблицу, ибо можем себе
- * это позволить. С однй стороны все данные можно отдавать
- * пропсами и разложить Table ROW на компоненты. Но с другой
- * можно добиться такого же результата обычным CSS
- */
 const HistoryPage: React.FC = () => {
   const classes = useStyles();
 
   return (
-    <Card raised>
+    <Card raised color="#fff">
       <Container className={classes.yourHistory}>
         <Typography className={classes.moveRight} variant="h6">
           Your history

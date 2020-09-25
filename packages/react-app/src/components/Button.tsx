@@ -9,7 +9,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 export type ButtonProps = {
-  variant: ButtonVariant;
+  variant?: ButtonVariant;
   label: string;
 };
 
