@@ -8,12 +8,10 @@ import Divider from '@material-ui/core/Divider';
 
 import Button, { ButtonProps } from './Button';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   app: { boxShadow: 'none' },
   title: {
     flexGrow: 1,
-    fontSize: theme.typography.pxToRem(16),
-    fontWeight: 700,
   },
 }));
 
@@ -28,9 +26,7 @@ const NavBar: React.FC<NavBarProps> = ({ buttonsList }) => {
     <AppBar className={classes.app} position="static" color="transparent">
       <Container>
         <Toolbar disableGutters>
-          <Typography variant="body1" className={classes.title}>
-            reNFT
-          </Typography>
+          <Typography variant="h3">reNFT</Typography>
           {buttonsList &&
             buttonsList.map((btn) => (
               <Button key={btn.label} label={btn.label} variant={btn.variant} />

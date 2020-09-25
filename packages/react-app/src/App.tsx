@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { Box } from '@material-ui/core';
 
 import Overview from './pages/overview';
 import Rent, { RentItem } from './pages/rentable';
@@ -75,7 +76,11 @@ const fakeRows = [
 const App: React.FC = () => (
   <Router>
     <Switch>
-      <Route path="/overview" component={Overview} />
+      <Route path="/overview">
+        <Box p={6}>
+          <Overview />
+        </Box>
+      </Route>
       <Route path="/rent">
         <Rent rows={fakeRows} />
       </Route>
