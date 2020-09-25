@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
+import { allProductsQuery } from '../../config/graph';
+import { request } from 'graphql-request';
+
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
@@ -53,8 +56,21 @@ type RentableProps = {
 };
 
 const Rentable: React.FC<RentableProps> = ({ rows }) => {
+  const [allProducts, setProducts] = useState();
+
   const classes = useStyles();
   const wallet = useWallet();
+
+  const endpoint = 'https://api.thegraph.com/subgraphs/name/rentft/rentftv1';
+
+  useEffect(() => {
+    // Create an scoped async function in the hook
+    const getProducts = async (): Promise<void> => {
+      const products = await request(endpoint, allProductsQuery);
+      setProducts(products);
+    };
+    getProducts();
+  }, []);
 
   return (
     <>
@@ -86,17 +102,17 @@ const Rentable: React.FC<RentableProps> = ({ rows }) => {
             <TableHead>
               <TableRow>
                 <TableCell>ID</TableCell>
-                <TableCell align="left">NFT Name</TableCell>
+                <TableCell align="left">NFT Address</TableCell>
                 <TableCell align="left">Price</TableCell>
-                <TableCell align="left">Address</TableCell>
-                <TableCell align="left">Rentail Duration</TableCell>
+                <TableCell align="left">Owner</TableCell>
+                <TableCell align="left">Rental Duration</TableCell>
                 <TableCell align="left">Collateral</TableCell>
                 <TableCell align="right">&nbsp;</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows &&
-                rows.map((row) => (
+              {allProducts &&
+                allProducts.map((row) => (
                   <TableRow key={row.id}>
                     <TableCell component="th" scope="row">
                       <Typography
@@ -111,23 +127,23 @@ const Rentable: React.FC<RentableProps> = ({ rows }) => {
                     <TableCell align="left" className={classes.minInfo}>
                       <CardMedia className={classes.img} image={row.img} />
                       <Typography noWrap variant="body2">
-                        {row.name}
+                        {row.address}
                       </Typography>
                     </TableCell>
 
                     <TableCell align="left" className={classes.cell}>
                       <Typography color="primary" variant="body2">
-                        {row.price} ETH
+                        {row.price} DAI
                       </Typography>
                     </TableCell>
 
                     <TableCell align="left" className={classes.cell}>
                       <Typography
                         component="a"
-                        href={row.address}
+                        href={row.owner}
                         className={classes.href}
                       >
-                        {row.address}
+                        {row.owner}
                       </Typography>
                     </TableCell>
 
@@ -138,7 +154,7 @@ const Rentable: React.FC<RentableProps> = ({ rows }) => {
 
                     <TableCell align="left" className={classes.cell}>
                       <Typography color="secondary" variant="body2">
-                        {row.collateral} ETH
+                        {row.collateral} DAI
                       </Typography>
                     </TableCell>
 

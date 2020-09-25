@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import CardMedia from '@material-ui/core/CardMedia';
 import List from '@material-ui/core/List';
 import { Typography, Container, Card, Box } from '@material-ui/core';
 import { request } from 'graphql-request';
-import { allProductsQuery } from '../../config/graph';
+import { productQuery } from '../../config/graph';
 import ListItem from './ListItem';
 import Button from '../../components/Button';
 import PreviousRentals from './components/PreviousRentals';
@@ -27,21 +27,24 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(0, 0, 2, 0),
   },
 }));
-
+ //Note -> path has to include the id i.e overview/1
 const Overview: React.FC = () => {
+  const [product, setProduct] = useState();
+  // dummy value this will coming from the state or path
+  const nftId = '2';
   const classes = useStyles();
   const endpoint = 'https://api.thegraph.com/subgraphs/name/rentft/rentftv1';
 
   useEffect(() => {
     // Create an scoped async function in the hook
-    const getProducts = async (): Promise<void> => {
-      await request(endpoint, allProductsQuery);
-      // const tokenList = await request(endpoint, allProductsQuery);
-      // console.log(tokenList);
+    const getProduct = async (): Promise<void> => {
+      const nftInfo = await request(endpoint, productQuery(nftId));
+      setProduct(nftInfo);
     };
-    getProducts();
+    getProduct();
   }, []);
 
+ // add the dynamic values here stored in userProfile object check graph dashboard or github schema to see what data is available
   return (
     <Container>
       <Card raised>
@@ -57,7 +60,7 @@ const Overview: React.FC = () => {
                 <Button label="Return" variant="outlined" />
               </div>
             </Grid>
-
+            
             <Grid item xs={12} sm={4} md={3} lg={3}>
               <List className={classes.paper}>
                 <ListItem title="ID" text="1" />
