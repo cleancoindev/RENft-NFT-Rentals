@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
+import Container from '@material-ui/core/Container';
 import { Card } from '@material-ui/core';
 
 import CardInfoIcon from './CardInfoIcon';
@@ -26,6 +27,15 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: '140px',
     width: '100%',
   },
+  yourHistory: {
+    margin: theme.spacing(2, 0, 0, 0),
+    padding: '0',
+    width: '100%',
+  },
+  moveRight: {
+    marginLeft: theme.spacing(3),
+    marginBottom: theme.spacing(2),
+  },
 }));
 
 /**
@@ -39,6 +49,10 @@ const HistoryPage: React.FC = () => {
 
   return (
     <Card raised>
+      <Container className={classes.yourHistory}>
+        <Typography className={classes.moveRight}>Your history</Typography>
+        <Divider />
+      </Container>
       <Grid container spacing={0} className={classes.root}>
         <Grid item className="itemColumn">
           <Typography className={classes.subName} variant="subtitle2">
@@ -99,10 +113,9 @@ const HistoryPage: React.FC = () => {
           />
         </Grid>
 
-        {/* GRID RIGHT ITEM */}
         <Grid item className="itemColumn">
           <Typography className={classes.subName} variant="subtitle2">
-            Leased NFT&#39;s
+            Leased NFTs
           </Typography>
           <Divider />
         </Grid>
