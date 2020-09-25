@@ -1,0 +1,19 @@
+.itemColumn {
+  max-width: 140px;
+  width: 100%;
+  display: inline-block;
+  background-color: blue;
+}
+
+@media only screen and (max-width: 768px) {
+  .itemColumn,
+  .itemCont {
+    max-width: 100% !important;
+  }
+}
+
+.itemCont {
+  max-width: calc(100% - 280px);
+  width: 100%;
+  text-align: center;
+}

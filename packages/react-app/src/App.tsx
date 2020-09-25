@@ -4,6 +4,7 @@ import { Box } from '@material-ui/core';
 
 import Overview from './pages/overview';
 import Rent, { RentItem } from './pages/rentable';
+import History from './pages/history';
 
 const createData = (
   id: number,
@@ -83,6 +84,9 @@ const App: React.FC = () => (
       </Route>
       <Route path="/rent">
         <Rent rows={fakeRows} />
+      </Route>
+      <Route path="/history">
+        <History />
       </Route>
     </Switch>
   </Router>
