@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme) => ({
   },
   name: {
     fontSize: theme.typography.pxToRem(13),
-    color: theme.palette.secondary.dark,
+    color: theme.palette.text.secondary,
   },
   desc: {
     fontSize: theme.typography.pxToRem(20),
