@@ -10,6 +10,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import CardMedia from '@material-ui/core/CardMedia';
 import { Button, Card } from '@material-ui/core';
+import { useWallet } from 'use-wallet';
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -53,81 +54,103 @@ type RentableProps = {
 
 const Rentable: React.FC<RentableProps> = ({ rows }) => {
   const classes = useStyles();
+  const wallet = useWallet();
 
   return (
-    <Card raised>
-      <TableContainer component={Paper}>
-        <Table className={classes.table} stickyHeader>
-          <TableHead>
-            <TableRow>
-              <TableCell>ID</TableCell>
-              <TableCell align="left">NFT Name</TableCell>
-              <TableCell align="left">Price</TableCell>
-              <TableCell align="left">Address</TableCell>
-              <TableCell align="left">Rentail Duration</TableCell>
-              <TableCell align="left">Collateral</TableCell>
-              <TableCell align="right">&nbsp;</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows &&
-              rows.map((row) => (
-                <TableRow key={row.id}>
-                  <TableCell component="th" scope="row">
-                    <Typography
-                      component="a"
-                      href={row.id}
-                      className={classes.href}
-                    >
-                      {row.id}
-                    </Typography>
-                  </TableCell>
+    <>
+      <>
+        <h1>Wallet</h1>
+        {wallet.status === 'connected' ? (
+          <div>
+            <div>Account: {wallet.account}</div>
+            <div>Balance: {wallet.balance}</div>
+            <button type="button" onClick={() => wallet.reset()}>
+              disconnect
+            </button>
+          </div>
+        ) : (
+          <div>
+            Connect:
+            <button type="button" onClick={() => wallet.connect('injected')}>
+              MetaMask
+            </button>
+          </div>
+        )}
+      </>
+      <Card raised>
+        <TableContainer component={Paper}>
+          <Table className={classes.table} stickyHeader>
+            <TableHead>
+              <TableRow>
+                <TableCell>ID</TableCell>
+                <TableCell align="left">NFT Name</TableCell>
+                <TableCell align="left">Price</TableCell>
+                <TableCell align="left">Address</TableCell>
+                <TableCell align="left">Rentail Duration</TableCell>
+                <TableCell align="left">Collateral</TableCell>
+                <TableCell align="right">&nbsp;</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows &&
+                rows.map((row) => (
+                  <TableRow key={row.id}>
+                    <TableCell component="th" scope="row">
+                      <Typography
+                        component="a"
+                        href={row.id}
+                        className={classes.href}
+                      >
+                        {row.id}
+                      </Typography>
+                    </TableCell>
 
-                  <TableCell align="left" className={classes.minInfo}>
-                    <CardMedia className={classes.img} image={row.img} />
-                    <Typography noWrap variant="body2">
-                      {row.name}
-                    </Typography>
-                  </TableCell>
+                    <TableCell align="left" className={classes.minInfo}>
+                      <CardMedia className={classes.img} image={row.img} />
+                      <Typography noWrap variant="body2">
+                        {row.name}
+                      </Typography>
+                    </TableCell>
 
-                  <TableCell align="left" className={classes.cell}>
-                    <Typography color="primary" variant="body2">
-                      {row.price} ETH
-                    </Typography>
-                  </TableCell>
+                    <TableCell align="left" className={classes.cell}>
+                      <Typography color="primary" variant="body2">
+                        {row.price} ETH
+                      </Typography>
+                    </TableCell>
 
-                  <TableCell align="left" className={classes.cell}>
-                    <Typography
-                      component="a"
-                      href={row.address}
-                      className={classes.href}
-                    >
-                      {row.address}
-                    </Typography>
-                  </TableCell>
+                    <TableCell align="left" className={classes.cell}>
+                      <Typography
+                        component="a"
+                        href={row.address}
+                        className={classes.href}
+                      >
+                        {row.address}
+                      </Typography>
+                    </TableCell>
 
-                  <TableCell align="left" className={classes.cell}>
-                    <Typography variant="subtitle2">MIN</Typography>
-                    <Typography variant="subtitle2">MAX</Typography>
-                  </TableCell>
+                    <TableCell align="left" className={classes.cell}>
+                      <Typography variant="subtitle2">MIN</Typography>
+                      <Typography variant="subtitle2">MAX</Typography>
+                    </TableCell>
 
-                  <TableCell align="left" className={classes.cell}>
-                    <Typography color="secondary" variant="body2">
-                      {row.collateral} ETH
-                    </Typography>
-                  </TableCell>
+                    <TableCell align="left" className={classes.cell}>
+                      <Typography color="secondary" variant="body2">
+                        {row.collateral} ETH
+                      </Typography>
+                    </TableCell>
 
-                  <TableCell align="right">
-                    <Button component="a" variant="outlined" href="#">
-                      View
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Card>
+                    <TableCell align="right">
+                      <Button component="a" variant="outlined" href="#">
+                        View
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Card>
+    </>
   );
 };
 

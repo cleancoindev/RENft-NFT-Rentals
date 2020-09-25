@@ -1,6 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import { UseWalletProvider } from 'use-wallet';
+
 import App from './App';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import './index.css';
+import 'sanitize.css';
+
+ReactDOM.render(
+  <UseWalletProvider chainId={42}>
+    <App />
+  </UseWalletProvider>,
+  document.getElementById('root')
+);
