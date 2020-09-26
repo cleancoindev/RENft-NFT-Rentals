@@ -29,9 +29,8 @@ export type Product = {
 
 // to be used in overview page code in overview => index.tsx
 export const productQuery = (nftId: string): string => {
-  const hex = web3.utils.toHex(nftId);
   return ` {
-      product(id: "${hex}") {
+      product(id: "${nftId}") {
         id
         address
         owner

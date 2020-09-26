@@ -8,7 +8,7 @@ import YourHistory from './pages/history';
 
 const App: React.FC = () => (
   <Switch>
-    <Route path="/overview">
+    <Route path="/overview/:id">
       <Box p={6}>
         <Overview />
       </Box>

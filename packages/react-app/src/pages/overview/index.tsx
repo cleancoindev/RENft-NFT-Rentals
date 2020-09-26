@@ -5,6 +5,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import List from '@material-ui/core/List';
 import { Typography, Container, Card, Box } from '@material-ui/core';
 import { request } from 'graphql-request';
+import { useParams } from "react-router";
 
 import { productQuery, Product } from '../../config/graph';
 import ListItem from './ListItem';
@@ -32,9 +33,9 @@ const useStyles = makeStyles((theme) => ({
 const Overview: React.FC = () => {
   // Viraz: Note -> path has to include the id i.e overview/1
   // Naz: Yup. Just the skeleton, the barebones for now
+  let { nftId } = useParams();
   const [product, setProduct] = useState<Product>();
   // dummy value this will coming from the state or path
-  const nftId = '2';
   const classes = useStyles();
   const endpoint = 'https://api.thegraph.com/subgraphs/name/rentft/rentftv1';
 
@@ -50,6 +51,8 @@ const Overview: React.FC = () => {
   }, []);
 
   // add the dynamic values here stored in userProfile object check graph dashboard or github schema to see what data is available
+  // due to list item unable to add but it will be like product.id, product.price etc..
+  // FYI the price would be in wei and needs to be converted to eth form
   return (
     <Container>
       <Box>{JSON.stringify(product)}</Box>
@@ -70,8 +73,8 @@ const Overview: React.FC = () => {
               <List className={classes.paper}>
                 <ListItem title="ID" text="1" />
                 <ListItem title="NFT NAME" text="Не читаемый текст(" />
-                <ListItem title="Price" text="0.001 ETH" />
-                <ListItem title="Collaternal" text="0.01ETH" />
+                <ListItem title="Price" text="0.001 DAI" />
+                <ListItem title="Collateral" text="0.0 DAI" />
                 <ListItem
                   title="Rental Duration"
                   text={
