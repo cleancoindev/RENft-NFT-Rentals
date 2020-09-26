@@ -9,7 +9,9 @@ import YourHistory from './pages/history';
 const App: React.FC = () => (
   <Switch>
     <Route path="/dashboard">
-      <Rent />
+      <Box p={6}>
+        <YourHistory />
+      </Box>
     </Route>
     <Route path="/overview/:nftId">
       <Box p={6}>
@@ -18,9 +20,7 @@ const App: React.FC = () => (
     </Route>
     {/* TODO: this should be a 404 */}
     <Route path="/">
-      <Box p={6}>
-        <YourHistory />
-      </Box>
+      <Rent />
     </Route>
   </Switch>
 );
