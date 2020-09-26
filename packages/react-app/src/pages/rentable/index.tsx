@@ -10,7 +10,8 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import CardMedia from '@material-ui/core/CardMedia';
-import { Button, Card, Link as MaterialLink } from '@material-ui/core';
+import { Button, Link as MaterialLink, Box } from '@material-ui/core';
+
 import { allProductsQuery } from '../../config/graph';
 
 const useStyles = makeStyles((theme) => ({
@@ -71,7 +72,7 @@ const Rentable: React.FC<RentableProps> = () => {
   }, []);
 
   return (
-    <Card raised>
+    <Box p={6}>
       <TableContainer component={Paper}>
         <Table className={classes.table} stickyHeader>
           <TableHead>
@@ -139,7 +140,7 @@ const Rentable: React.FC<RentableProps> = () => {
           </TableBody>
         </Table>
       </TableContainer>
-    </Card>
+    </Box>
   );
 };
 

@@ -72,17 +72,17 @@ const HistoryPage: React.FC = () => {
           <Divider />
 
           <CardInfoIcon
-            type="minus"
+            type="plus"
             cardContentText="# currently rented"
-            counter={34}
-            procent={25}
+            counter={5}
+            procent={1}
             icon={rentIcon}
           />
           <CardInfoIcon
-            type="plus"
+            type="minus"
             cardContentText="# currently leased"
-            counter={7}
-            procent={70}
+            counter={3}
+            procent={13}
             icon={leaseIcon}
           />
 
@@ -102,17 +102,17 @@ const HistoryPage: React.FC = () => {
           </div>
 
           <CardInfoIcon
-            type="minus"
+            type="plus"
             cardContentText="# completed rented"
             counter={34}
-            procent={25}
+            procent={1}
             icon={rentIcon}
           />
           <CardInfoIcon
             type="plus"
             cardContentText="# completed leased"
             counter={7}
-            procent={70}
+            procent={23}
             icon={leaseIcon}
           />
         </Grid>

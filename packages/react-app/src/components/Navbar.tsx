@@ -11,6 +11,7 @@ import { MetaMaskButton, Blockie, Loader } from 'rimble-ui';
 
 import WalletContext from '../ctx/wallet';
 import Button from './Button';
+import { connectAudio } from '../decorators';
 
 const useStyles = makeStyles((theme) => ({
   app: { boxShadow: 'none', display: 'flex' },
@@ -47,6 +48,10 @@ const NavBar: React.FC = () => {
     )}`;
   }, [wallet]);
 
+  const playSound = useCallback(async () => {
+    await connectAudio.play();
+  }, []);
+
   return (
     <AppBar className={classes.app} position="static" color="transparent">
       <Container>
@@ -60,6 +65,7 @@ const NavBar: React.FC = () => {
                 variant="h5"
                 className={classes.noUnderline}
                 component={Link}
+                onClick={playSound}
                 to="/"
               >
                 HOME
@@ -70,6 +76,7 @@ const NavBar: React.FC = () => {
                 variant="h5"
                 className={classes.noUnderline}
                 component={Link}
+                onClick={playSound}
                 to="/dashboard"
               >
                 DASHBOARD
