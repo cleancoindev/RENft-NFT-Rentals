@@ -7,6 +7,7 @@ import Container from '@material-ui/core/Container';
 import Divider from '@material-ui/core/Divider';
 import { Box, Grid, Link as MaterialLink } from '@material-ui/core';
 import { useWallet } from 'use-wallet';
+import { MetaMaskButton, Blockie, Loader } from 'rimble-ui';
 
 import Button from './Button';
 
@@ -24,11 +25,19 @@ const NavBar: React.FC = () => {
   const classes = useStyles();
   const wallet = useWallet<'injected'>();
 
-  const connectWallet = useCallback(
-    (): Promise<void> => wallet.connect('injected'),
-    [wallet]
-  );
-  const disconnectWallet = useCallback((): void => wallet.reset(), [wallet]);
+  const connectWallet = useCallback(() => {
+    wallet.connect('injected');
+  }, [wallet]);
+  // const disconnectWallet = useCallback((): void => wallet.reset(), [wallet]);
+  const userAddress = useCallback((): string => {
+    if (!wallet || !wallet.account) {
+      return '';
+    }
+    return `${wallet.account.substr(0, 5)}...${wallet.account.substr(
+      wallet.account.length - 5,
+      5
+    )}`;
+  }, [wallet]);
 
   return (
     <AppBar className={classes.app} position="static" color="transparent">
@@ -58,18 +67,38 @@ const NavBar: React.FC = () => {
             </Grid>
 
             <Box marginLeft="auto">
-              <Button label="List NFTs" />
-              <Button
-                label={
-                  wallet.status !== 'disconnected' ? 'Disconnect' : 'Connect'
-                }
-                variant="outlined"
-                handleClick={
-                  wallet.status !== 'connected'
-                    ? connectWallet
-                    : disconnectWallet
-                }
-              />
+              <Box display="flex" flexDirection="row">
+                <Button variant="outlined" label="List NFTs" />
+
+                {wallet.status === 'disconnected' && (
+                  <MetaMaskButton.Outline onClick={connectWallet}>
+                    <Typography>Connect with MetaMask</Typography>
+                  </MetaMaskButton.Outline>
+                )}
+                {wallet.status === 'connecting' && (
+                  <Box alignSelf="center" p={2}>
+                    <Loader />
+                  </Box>
+                )}
+                {wallet.status === 'connected' && (
+                  <Box component="div" display="inline">
+                    <Box display="flex" justifyContent="center">
+                      <Blockie />
+                      <Box alignSelf="center" p={1}>
+                        <Typography>
+                          <MaterialLink
+                            underline="none"
+                            href={`https://etherscan.io/address/${wallet.account}`}
+                            color="textSecondary"
+                          >
+                            {userAddress()}
+                          </MaterialLink>
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </Box>
+                )}
+              </Box>
             </Box>
           </Grid>
         </Toolbar>

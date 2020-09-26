@@ -50,6 +50,9 @@ export const rent = async (
   );
 
   const renft = renftContract(web3);
+
+  // hardcoded for now (the URL bit)
+  await renft.methods.fetchNFTPriceBeforeReturn();
 };
 
 export { abis, addresses };
