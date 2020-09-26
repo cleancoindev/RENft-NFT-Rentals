@@ -1,12 +1,11 @@
 import React, { useCallback } from 'react';
-import Link from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Divider from '@material-ui/core/Divider';
-import { Box, Grid } from '@material-ui/core';
+import { Box, Grid, Link as MaterialLink } from '@material-ui/core';
 import { useWallet } from 'use-wallet';
 
 import Button from './Button';
@@ -31,9 +30,6 @@ const NavBar: React.FC = () => {
   );
   const disconnectWallet = useCallback((): void => wallet.reset(), [wallet]);
 
-  const preventDefault = (event: React.SyntheticEvent): void =>
-    event.preventDefault();
-
   return (
     <AppBar className={classes.app} position="static" color="transparent">
       <Container>
@@ -44,26 +40,20 @@ const NavBar: React.FC = () => {
             </Grid>
             <Grid item>
               <Typography variant="h5" color="textSecondary">
-                <Link
-                  underline="none"
-                  href="/"
-                  onClick={preventDefault}
-                  color="textSecondary"
-                >
+                <MaterialLink underline="none" href="/" color="textSecondary">
                   HOME
-                </Link>
+                </MaterialLink>
               </Typography>
             </Grid>
             <Grid item>
               <Typography variant="h5">
-                <Link
+                <MaterialLink
                   underline="none"
                   href="/dashboard"
-                  onClick={preventDefault}
                   color="textSecondary"
                 >
                   DASHBOARD
-                </Link>
+                </MaterialLink>
               </Typography>
             </Grid>
 

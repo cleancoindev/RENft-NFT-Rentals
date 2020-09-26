@@ -5,7 +5,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import List from '@material-ui/core/List';
 import { Typography, Container, Card, Box } from '@material-ui/core';
 import { request } from 'graphql-request';
-import { useParams } from "react-router";
+import { useParams } from 'react-router-dom';
 
 import { productQuery, Product } from '../../config/graph';
 import ListItem from './ListItem';
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
 const Overview: React.FC = () => {
   // Viraz: Note -> path has to include the id i.e overview/1
   // Naz: Yup. Just the skeleton, the barebones for now
-  let { nftId } = useParams();
+  const { nftId } = useParams();
   const [product, setProduct] = useState<Product>();
   // dummy value this will coming from the state or path
   const classes = useStyles();
@@ -48,7 +48,7 @@ const Overview: React.FC = () => {
     getProduct();
     // Naz: this may fail on first fetch. And since this useEffect will only call once
     // we may never fetch the product. We need to re-fetch if we haven't fetched
-  }, []);
+  }, [nftId]);
 
   // add the dynamic values here stored in userProfile object check graph dashboard or github schema to see what data is available
   // due to list item unable to add but it will be like product.id, product.price etc..

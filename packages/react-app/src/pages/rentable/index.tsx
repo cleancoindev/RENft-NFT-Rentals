@@ -6,17 +6,11 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import { request } from 'graphql-request';
-import {
-  BrowserRouter as Router,
-  Link,
-  Route,
-  Switch,
-} from 'react-router-dom';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import CardMedia from '@material-ui/core/CardMedia';
-import { Button, Card } from '@material-ui/core';
+import { Button, Card, Link as MaterialLink } from '@material-ui/core';
 import { allProductsQuery } from '../../config/graph';
 
 const useStyles = makeStyles((theme) => ({
@@ -75,8 +69,7 @@ const Rentable: React.FC<RentableProps> = () => {
     };
     getProducts();
   }, []);
-// getting issue in tsx while adding Link tag to enable routing the row would be clickable and would navigate to the rentable page
-// the user profile page is missing right now which would have the user profile query
+
   return (
     <Card raised>
       <TableContainer component={Paper}>
@@ -95,21 +88,17 @@ const Rentable: React.FC<RentableProps> = () => {
           <TableBody>
             {allProducts &&
               allProducts.map((row) => (
-
                 <TableRow key={row.id}>
                   <TableCell component="th" scope="row">
-                    <Typography
-                      component="a"
-                      href={row.id}
-                      className={classes.href}
-                    >
-                <Link to={`/overview/${row.id}`}/>{row.id}</Link>
-                    </Typography>
+                    <Typography>{row.id}</Typography>
                   </TableCell>
+
                   <TableCell align="left" className={classes.minInfo}>
                     <CardMedia className={classes.img} image={row.img} />
-                    <Typography noWrap variant="body2">
-                      {row.address}
+                    <Typography className={classes.href} noWrap variant="body2">
+                      <MaterialLink href={`/overview/${row.address}`}>
+                        {row.address}
+                      </MaterialLink>
                     </Typography>
                   </TableCell>
 

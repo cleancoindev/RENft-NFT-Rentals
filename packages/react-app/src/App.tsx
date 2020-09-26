@@ -8,14 +8,15 @@ import YourHistory from './pages/history';
 
 const App: React.FC = () => (
   <Switch>
-    <Route path="/overview/:id">
+    <Route path="/dashboard">
+      <Rent />
+    </Route>
+    <Route path="/overview/:nftId">
       <Box p={6}>
         <Overview />
       </Box>
     </Route>
-    <Route path="/dashboard">
-      <Rent />
-    </Route>
+    {/* TODO: this should be a 404 */}
     <Route path="/">
       <Box p={6}>
         <YourHistory />
