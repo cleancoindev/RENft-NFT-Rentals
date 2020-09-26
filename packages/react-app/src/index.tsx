@@ -4,7 +4,6 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { UseWalletProvider } from 'use-wallet';
 import { ThemeProvider } from '@material-ui/core/styles';
 
-import NavBar from './components/Navbar';
 import App from './App';
 import theme from './theme';
 
@@ -15,7 +14,6 @@ ReactDOM.render(
   <ThemeProvider theme={theme}>
     <UseWalletProvider chainId={42}>
       <Router>
-        <NavBar />
         <App />
       </Router>
     </UseWalletProvider>

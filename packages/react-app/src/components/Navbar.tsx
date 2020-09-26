@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -6,9 +6,9 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Divider from '@material-ui/core/Divider';
 import { Box, Grid, Link as MaterialLink } from '@material-ui/core';
-import { useWallet } from 'use-wallet';
 import { MetaMaskButton, Blockie, Loader } from 'rimble-ui';
 
+import WalletContext from '../ctx/wallet';
 import Button from './Button';
 
 const useStyles = makeStyles((theme) => ({
@@ -23,9 +23,12 @@ const useStyles = makeStyles((theme) => ({
 
 const NavBar: React.FC = () => {
   const classes = useStyles();
-  const wallet = useWallet<'injected'>();
+  const { wallet } = useContext(WalletContext);
 
   const connectWallet = useCallback(() => {
+    if (!wallet) {
+      return;
+    }
     wallet.connect('injected');
   }, [wallet]);
   // const disconnectWallet = useCallback((): void => wallet.reset(), [wallet]);
@@ -70,17 +73,17 @@ const NavBar: React.FC = () => {
               <Box display="flex" flexDirection="row">
                 <Button variant="outlined" label="List NFTs" />
 
-                {wallet.status === 'disconnected' && (
+                {wallet?.status === 'disconnected' && (
                   <MetaMaskButton.Outline onClick={connectWallet}>
                     <Typography>Connect with MetaMask</Typography>
                   </MetaMaskButton.Outline>
                 )}
-                {wallet.status === 'connecting' && (
+                {wallet?.status === 'connecting' && (
                   <Box alignSelf="center" p={2}>
                     <Loader />
                   </Box>
                 )}
-                {wallet.status === 'connected' && (
+                {wallet?.status === 'connected' && (
                   <Box component="div" display="inline">
                     <Box display="flex" justifyContent="center">
                       <Blockie />
