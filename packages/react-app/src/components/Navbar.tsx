@@ -1,4 +1,5 @@
 import React, { useCallback, useContext } from 'react';
+import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -18,6 +19,10 @@ const useStyles = makeStyles((theme) => ({
   },
   blackButton: {
     background: theme.palette.secondary.main,
+  },
+  noUnderline: {
+    textDecoration: 'none',
+    color: theme.palette.text.secondary,
   },
 }));
 
@@ -51,21 +56,23 @@ const NavBar: React.FC = () => {
               <Typography variant="h3">reNFT</Typography>
             </Grid>
             <Grid item>
-              <Typography variant="h5" color="textSecondary">
-                <MaterialLink underline="none" href="/" color="textSecondary">
-                  HOME
-                </MaterialLink>
+              <Typography
+                variant="h5"
+                className={classes.noUnderline}
+                component={Link}
+                to="/"
+              >
+                HOME
               </Typography>
             </Grid>
             <Grid item>
-              <Typography variant="h5">
-                <MaterialLink
-                  underline="none"
-                  href="/dashboard"
-                  color="textSecondary"
-                >
-                  DASHBOARD
-                </MaterialLink>
+              <Typography
+                variant="h5"
+                className={classes.noUnderline}
+                component={Link}
+                to="/dashboard"
+              >
+                DASHBOARD
               </Typography>
             </Grid>
 
