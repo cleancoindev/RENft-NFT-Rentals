@@ -87,6 +87,7 @@ export const addProduct = async (
 // https://github.com/RENTFT/contracts/blob/master/contracts/rentft.sol#L175
 // TODO: sanity check the daiApproveAmount (i.e. that is in vicinity of k * 1e18 for all k in natural numbers)
 
+// TODO: missing send!
 export const approve = async (web3) => {
   const daiInstance = daiContract(web3, addresses.dai);
 
@@ -158,6 +159,11 @@ export const returnNft = async (
   account: any
 ) => {
   const renft = renftContract(web3);
+  const nftCon = nftContract(web3, nftToReturnAddress);
+
+  await nftCon.methods
+    .approve(addresses.renft, nftToReturnTokenId)
+    .send({ from: account });
 
   // hardcoded for now (the URL bit)
   // this will update the price of the NFT
