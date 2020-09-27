@@ -81,10 +81,10 @@ const Overview: React.FC<ProductProps> = () => {
                   className={classes.img}
                   image="https://image.freepik.com/free-vector/close-up-of-cool-cat_36380-133.jpg"
                 />
-                {product && product.borrower == wallet?.account && !product.available && 
+                {product && product.borrower == wallet?.account && !product.available && product.owner != wallet?.account &&
                  <Button label="Return" variant="outlined" />
                 }
-                {product && product.available && <Button label="Rent" variant="contained" />}
+                {product && product.available && product.owner != wallet?.account && <Button label="Rent" variant="contained" />}
                 
                
               </div>
