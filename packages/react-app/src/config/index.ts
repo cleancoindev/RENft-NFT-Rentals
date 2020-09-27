@@ -24,7 +24,7 @@ import addresses from './addresses';
 
 const API_NFT_PRICE_BASE_URL = 'http://nftapi.free.beeceptor.com/';
 // default is approve our smart contract to withdraw DAI up to 21 billion tokens
-const defaultDaiApproveAmount = String(21000000000 * 1e18);
+const defaultDaiApproveAmount = String(21000000000000000000);
 
 // this needs to be removed
 export const NftAddress = '0x527E95AE7B40FCBD60D67DE1D7E1C6A7CB14D42B';
@@ -34,7 +34,7 @@ export const tokenId = '12316';
 // on the front-end and we easily get the prices for the NFTs. (if available)
 // TODO: the plan is also to let the leaser specify the daily collateral himself
 // eventally, we will be able to advise them on the rate
-const API_NFT_PRICE_RELATIVE_URL = `/api/v1/asset/${NftAddress}/${tokenId}/`;
+// const API_NFT_PRICE_RELATIVE_URL = `/api/v1/asset/${NftAddress}/${tokenId}/`;
 
 // NOTE=> Using any since was getting an error approve does not exist on type Contract
 export const renftContract: any = (web3: Web3) => {
@@ -95,7 +95,7 @@ export const approve = async (web3) => {
     defaultDaiApproveAmount
       ? String(defaultDaiApproveAmount)
       : defaultDaiApproveAmount
-  )
+  );
 };
 
 /**
@@ -123,27 +123,24 @@ export const rent = async (
   // this will update the price of the NFT
   // this is required so that we correctly compute the
   // collateral the leaser has to pay for the NFT
-//   const priceFetchReceipt = await renft.methods
-//     .fetchNFTPriceBeforeReturn(
-//       API_NFT_PRICE_BASE_URL
-//       // `${API_NFT_PRICE_BASE_URL}${API_NFT_PRICE_RELATIVE_URL}`
-//     )
-//     .send({ from: borrower });
+  //   const priceFetchReceipt = await renft.methods
+  //     .fetchNFTPriceBeforeReturn(
+  //       API_NFT_PRICE_BASE_URL
+  //       // `${API_NFT_PRICE_BASE_URL}${API_NFT_PRICE_RELATIVE_URL}`
+  //     )
+  //     .send({ from: borrower });
   const daiInstance = daiContract(web3, addresses.dai);
 
-  await daiInstance.methods.approve(
-    addresses.renft,
-    defaultDaiApproveAmount
-      ? String(defaultDaiApproveAmount)
-      : defaultDaiApproveAmount
-  ).send({ from: borrower });
+  await daiInstance.methods
+    .approve(addresses.renft, String(defaultDaiApproveAmount))
+    .send({ from: borrower });
 
   // TODO: !!!!!!!!! HARDCODED tokenId and NftAddress
   const rentReceipt = await renft.methods
     .rent(borrower, duration, nftToRentAddress, nftToRentTokenId)
     .send({ from: borrower });
 
-  return { priceFetchReceipt, rentReceipt };
+  return { rentReceipt };
 };
 
 /**
