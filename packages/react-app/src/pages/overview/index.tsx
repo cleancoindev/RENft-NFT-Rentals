@@ -56,7 +56,6 @@ const Overview: React.FC<ProductProps> = () => {
   const handleRent = async (e) => {
     e.preventDefault();
     if (product && wallet) {
-      await approve(web3);
       await rent(
         web3,
         wallet.account || '',
