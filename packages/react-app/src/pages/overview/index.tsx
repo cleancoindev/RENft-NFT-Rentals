@@ -7,7 +7,7 @@ import { Container, Card, Box } from '@material-ui/core';
 import { request } from 'graphql-request';
 import { useParams } from 'react-router-dom';
 import WalletContext from '../../ctx/wallet';
-import { approve, rent, returnNft } from '../../config/index';
+import { ownersClaim, rent, returnNft } from '../../config/index';
 import { productQuery, Product, ProductProps } from '../../config/graph';
 import ListItem from './ListItem';
 import Button from '../../components/Button';
@@ -72,6 +72,12 @@ const Overview: React.FC<ProductProps> = () => {
       await returnNft(web3, product.address, product.id, wallet.account);
   };
 
+  const claimYield = async (e) => {
+    e.preventDefault();
+    if (product && wallet)
+      await ownersClaim(web3, product.address, product.id, wallet.account);
+  };
+
   // add the dynamic values here stored in userProfile object check graph dashboard or github schema to see what data is available
   // due to list item unable to add but it will be like product.id, product.price etc..
   // FYI the price would be in wei and needs to be converted to eth form
@@ -108,7 +114,11 @@ const Overview: React.FC<ProductProps> = () => {
                   variant="contained"
                   handleClick={handleReturn}
                 />
-                <Button label="Claim Yield" variant="contained" />
+                <Button
+                  label="Claim Yield"
+                  variant="contained"
+                  handleClick={claimYield}
+                />
               </div>
             </Grid>
             <Grid item xs={12} sm={4} md={3} lg={3}>
