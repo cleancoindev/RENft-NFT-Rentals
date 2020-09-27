@@ -26,6 +26,18 @@ export type Product = {
   collateral: number;
   available: boolean;
 };
+export type ProductProps = {
+  product?: Product;
+};
+
+export type Profile = {
+  id: string;
+  nftRented: Product[];
+  nftOwned: Product[];
+}
+export type ProfileProps = {
+  user?: Profile;
+};
 
 // to be used in overview page code in overview => index.tsx
 export const productQuery = (nftId: string): string => {
@@ -44,7 +56,7 @@ export const productQuery = (nftId: string): string => {
     }`;
 };
 // to be used in user profile page
-export const userProfileQuery = (user: string): string => {
+export const userProfileQuery = (user): string => {
   const hex = web3.utils.toHex(user);
   return `{
       user(id: "${hex}") {

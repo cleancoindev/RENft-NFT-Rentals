@@ -1,10 +1,13 @@
-import React from 'react';
+import React, {useState, useContext, useEffect, ProfilerProps } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import { Card } from '@material-ui/core';
+import { request } from 'graphql-request';
+import { userProfileQuery } from '../../config/graph';
+import WalletContext from '../../ctx/wallet';
 
 import CardInfoIcon from './CardInfoIcon';
 import CardGraphic from './CardGraphic';
@@ -39,8 +42,26 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const HistoryPage: React.FC = () => {
+  const [profile, setProfile] = useState();
+  const { wallet } = useContext(WalletContext);
   const classes = useStyles();
-
+  const endpoint = 'https://api.thegraph.com/subgraphs/name/rentft/rentftv1';
+  useEffect(() => {
+    // Create an scoped async function in the hook
+    const getProfile = async (): Promise<void> => {
+      if (wallet) {
+        const profile = await request(
+          endpoint,
+          userProfileQuery(wallet.account)
+        );
+      }
+      // remove the spreading of the dummyNfts here in the future
+      // was getting an error property user does not exist on type profile && obj is possibly undefined while setting this
+      // if (profile) setProfile(profile.user);
+    };
+    getProfile();
+  }, []);
+  // profile data is coming if it is null show you haven't rented or own any nft's yet else there need to be two small tables or lists 1. for rented nft 2. for owner nft all data is coming
   return (
     <Card raised color="#fff">
       <Container className={classes.yourHistory}>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -6,8 +6,10 @@ import List from '@material-ui/core/List';
 import { Typography, Container, Card, Box } from '@material-ui/core';
 import { request } from 'graphql-request';
 import { useParams } from 'react-router-dom';
+import WalletContext from '../../ctx/wallet';
+import { rent, returnNft } from '../../../../contracts/src/index'
 
-import { productQuery, Product } from '../../config/graph';
+import { productQuery, Product, ProductProps } from '../../config/graph';
 import ListItem from './ListItem';
 import Button from '../../components/Button';
 import PreviousRentals from './components/PreviousRentals';
@@ -30,12 +32,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Overview: React.FC = () => {
+const Overview: React.FC<ProductProps> = () => {
   // Viraz: Note -> path has to include the id i.e overview/1
   // Naz: Yup. Just the skeleton, the barebones for now
   const { nftId } = useParams();
+  const { wallet } = useContext(WalletContext);
   const [product, setProduct] = useState<Product>();
-  console.debug(product);
   // dummy value this will coming from the state or path
   const classes = useStyles();
   const endpoint = 'https://api.thegraph.com/subgraphs/name/rentft/rentftv1';
@@ -44,16 +46,30 @@ const Overview: React.FC = () => {
     // Create an scoped async function in the hook
     const getProduct = async (): Promise<void> => {
       const nftInfo = await request(endpoint, productQuery(nftId));
-      setProduct(nftInfo);
+      setProduct(nftInfo.product);
     };
     getProduct();
     // Naz: this may fail on first fetch. And since this useEffect will only call once
     // we may never fetch the product. We need to re-fetch if we haven't fetched
   }, [nftId]);
 
+  // need to be connect with buttons
+  const handleRent = async (e) => {
+    e.preventDefault();
+    // need a way to get the web3 instance
+    // await rent(wallet?.connector, product.borrower, product.duration, product.address, product.id, wallet.account);
+  };
+
+  const handleReturn = async (e) => {
+    e.preventDefault();
+    // need a way to get the web3 instance
+    // await returnNft(wallet?.connector,  product.address, product.id, wallet.account);
+  };
+
   // add the dynamic values here stored in userProfile object check graph dashboard or github schema to see what data is available
   // due to list item unable to add but it will be like product.id, product.price etc..
   // FYI the price would be in wei and needs to be converted to eth form
+  // need to add to list item
   return (
     <Container>
       <Card raised>
@@ -65,8 +81,12 @@ const Overview: React.FC = () => {
                   className={classes.img}
                   image="https://image.freepik.com/free-vector/close-up-of-cool-cat_36380-133.jpg"
                 />
-                <Button label="Rent" variant="contained" />
-                <Button label="Return" variant="outlined" />
+                {product && product.borrower == wallet?.account && !product.available && 
+                 <Button label="Return" variant="outlined" />
+                }
+                {product && product.available && <Button label="Rent" variant="contained" />}
+                
+               
               </div>
             </Grid>
             <Grid item xs={12} sm={4} md={3} lg={3}>

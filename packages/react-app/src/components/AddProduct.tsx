@@ -1,6 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Box, Form, Input, Field, Flex, Button, Modal, Card } from 'rimble-ui';
 import { Button as MaterialButton } from '@material-ui/core';
+import { addProduct } from '../../../contracts/src/index'
+import Web3 from "web3/types";
+import WalletContext from '../ctx/wallet';
 
 type AddProductProps = {
   isOpen: boolean;
@@ -8,11 +11,12 @@ type AddProductProps = {
 };
 
 const AddProduct: React.FC<AddProductProps> = ({ isOpen, setIsOpen }) => {
+  
   const [validated, setValidated] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [formInputValue, setFormInputValue] = useState('');
   const [duration, setDuration] = useState(0);
-
+  const { wallet } = useContext(WalletContext);
   const validateInput = (e) => {
     e.target.parentNode.classList.add('was-validated');
   };
@@ -45,9 +49,10 @@ const AddProduct: React.FC<AddProductProps> = ({ isOpen, setIsOpen }) => {
     validateForm();
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Submitted valid form');
+    // need a way to get the web3 instance
+    // await addProduct(wallet?.connector, inputValue, formInputValue, duration, wallet.account);
   };
 
   return (
@@ -97,7 +102,7 @@ const AddProduct: React.FC<AddProductProps> = ({ isOpen, setIsOpen }) => {
                   </Field>
                 </Box>
                 <Box width={[1, 1, 1 / 2]} px={3}>
-                  <Field label="Duration" validated={validated} width={1}>
+                  <Field label="Duration (in days)" validated={validated} width={1}>
                     <Form.Input
                       type="number"
                       required // set required attribute to use brower's HTML5 input validation

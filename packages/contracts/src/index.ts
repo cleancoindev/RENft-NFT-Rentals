@@ -29,6 +29,7 @@ const API_NFT_PRICE_BASE_URL = process.env.REACT_APP_API_NFT_PRICE_BASE_URL;
 // default is approve our smart contract to withdraw DAI up to 21 billion tokens
 const defaultDaiApproveAmount = String(21000000000 * 1e18);
 
+// this needs to be removed
 export const NftAddress = "0x527E95AE7B40FCBD60D67DE1D7E1C6A7CB14D42B";
 export const tokenId = "12316";
 
@@ -38,20 +39,42 @@ export const tokenId = "12316";
 // eventally, we will be able to advise them on the rate
 const API_NFT_PRICE_RELATIVE_URL = `/api/v1/asset/${NftAddress}/${tokenId}/`;
 
-export const renftContract = (web3: Web3) =>
+// NOTE=> Using any since was getting an error approve does not exist on type Contract
+export const renftContract: any = (web3: Web3) =>
   new web3.eth.Contract(abis.renft, addresses.renft);
 
-export const nftContract = (web3: Web3, nftAddress: string) =>
+export const nftContract: any = (web3: Web3, nftAddress: string) =>
   new web3.eth.Contract(abis.erc721, nftAddress);
 
-export const daiContract = (web3: Web3, daiAddress: string) =>
+export const daiContract: any = (web3: Web3, daiAddress: string) =>
   new web3.eth.Contract(abis.erc20, daiAddress);
+
+/**
+ * **READ CAREFULLY**
+ * @param nftToAddAddress
+ * @param nftToAddTokenId
+ * @param duration
+ * @param account
+ */
+  export const addProduct = async (
+    web3: any,
+    nftToAddAddress: string,
+    nftToAddTokenId: string,
+    duration: number,
+    account: any,
+  ) => {
+    const nftContractInstance = nftContract(web3, nftToAddAddress);
+    const renftContractInstance = renftContract(web3);
+    await nftContractInstance.approve(addresses.renft, nftToAddTokenId).send({from : account});
+    await renftContractInstance.addProduct(nftToAddAddress, nftToAddTokenId, duration, `${API_NFT_PRICE_BASE_URL}${API_NFT_PRICE_RELATIVE_URL}`).send({from : account});
+  }
 
 // TODO: writing this here because this I am editing it now and I recalled something
 // TODO: we are using transfer calls in the smart contract
 // we should sub them all for safeTransfer equivalents
 // TODO: another thing
 // we should divide in the very end here (from the quick look without thinking about it: IMTV (acronym for In My Thoughtless View)):
+// Viraz - to remove the loop i did this to save the call and it has been tested
 // https://github.com/RENTFT/contracts/blob/master/contracts/rentft.sol#L175
 // TODO: sanity check the daiApproveAmount (i.e. that is in vicinity of k * 1e18 for all k in natural numbers)
 
@@ -61,9 +84,11 @@ export const daiContract = (web3: Web3, daiAddress: string) =>
  * @param borrower
  * @param duration
  * @param nftToRentAddress <- IGNORED WHEN FETCHING PRICE. not used right now because OpenSea & Aave do not share any testnets. We have mocked the OpenSea API responses, so when we deploy to mainnet, all we have to do is change the BASE_URL env var
+ // Viraz => Apoorv tested this with real url can't we have this populated
  * @param nftToRentTokenId <- IGNORED WHEN FETCHING PRICE. smae as above
- * @param daiContract
+ * @param daiContract - // do we need this can't we use the contract instance defined above
  * @param daiApproveAmount
+ * @param account
  */
 export const rent = async (
   web3: Web3,
@@ -71,15 +96,16 @@ export const rent = async (
   duration: number,
   nftToRentAddress: string,
   nftToRentTokenId: string,
-  daiContract: Contract,
-  daiApproveAmount?: number
-) => {
+  account: any,
+  ) => {
   // TODO: try catch this merhaps (all of it)
-  // TODO: or merhaps, the ErrorBoundary can catch this
+  // TODO: or perhaps, the ErrorBoundary can catch this
   // user must approve our contract spending their DAI
+  const daiInstance = daiContract(web3, addresses.dai);
+
   await daiContract.methods.approve(
     addresses.renft,
-    daiApproveAmount ? String(daiApproveAmount) : defaultDaiApproveAmount
+    defaultDaiApproveAmount ? String(defaultDaiApproveAmount) : defaultDaiApproveAmount
   );
 
   const renft = renftContract(web3);
@@ -92,12 +118,12 @@ export const rent = async (
     .fetchNFTPriceBeforeReturn(
       `${API_NFT_PRICE_BASE_URL}${API_NFT_PRICE_RELATIVE_URL}`
     )
-    .send();
+    .send({from: account});
 
   // TODO: !!!!!!!!! HARDCODED tokenId and NftAddress
   const rentReceipt = await renft.methods
     .rent(borrower, duration, nftToRentAddress, nftToRentTokenId)
-    .send();
+    .send({from: account});
 
   return { priceFetchReceipt, rentReceipt };
 };
@@ -113,7 +139,8 @@ export const rent = async (
 export const returnNft = async (
   web3: Web3,
   nftToReturnAddress: string,
-  nftToReturnTokenId: string
+  nftToReturnTokenId: string,
+  account: any,
 ) => {
   const renft = renftContract(web3);
 
@@ -125,11 +152,11 @@ export const returnNft = async (
     .fetchNFTPriceBeforeReturn(
       `${API_NFT_PRICE_BASE_URL}${API_NFT_PRICE_RELATIVE_URL}`
     )
-    .send();
+    .send({from: account});
 
   const returnNftReceipt = await renft.methods
     .returnNFT(nftToReturnAddress, nftToReturnTokenId)
-    .send();
+    .send({from: account});
 
   return { priceFetchReceipt, returnNftReceipt };
 };

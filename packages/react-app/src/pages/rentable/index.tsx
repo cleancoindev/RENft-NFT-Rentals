@@ -147,7 +147,7 @@ const Rentable: React.FC<RentableProps> = () => {
     };
     getProducts();
   }, []);
-
+  // for duration we should just show row.duration i think instead of min max it is coming from graph
   return (
     <Box p={6}>
       <TableContainer component={Paper}>
@@ -188,7 +188,7 @@ const Rentable: React.FC<RentableProps> = () => {
                     <Typography color="primary" variant="body2">
                       {/* TODO: my brain does not work anymore. double type conversiosn bonanza */}
                       {row.price &&
-                        parseFloat(String(row.price / 1e18)).toFixed(2)}{' '}
+                        parseFloat(String(row.price / 1e18)).toFixed(3)}{' '}
                       DAI
                     </Typography>
                   </TableCell>
@@ -202,7 +202,6 @@ const Rentable: React.FC<RentableProps> = () => {
                       {row.owner}
                     </Typography>
                   </TableCell>
-
                   <TableCell align="left" className={classes.cell}>
                     {/* TODO: hardcoded dates */}
                     <Typography variant="subtitle2">
@@ -217,7 +216,7 @@ const Rentable: React.FC<RentableProps> = () => {
                     <Typography color="secondary" variant="body2">
                       {row.collateral &&
                         parseFloat(String(row.collateral / 1e18)).toFixed(
-                          2
+                          3
                         )}{' '}
                       DAI
                     </Typography>
@@ -227,7 +226,7 @@ const Rentable: React.FC<RentableProps> = () => {
                     <Typography
                       variant="overline"
                       component={Link}
-                      to={`/overview/${row.address}`}
+                      to={`/overview/${row.id}`}
                     >
                       View
                     </Typography>
