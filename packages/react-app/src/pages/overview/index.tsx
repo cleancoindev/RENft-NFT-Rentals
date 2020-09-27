@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useCallback } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -42,18 +42,14 @@ const Overview: React.FC<ProductProps> = () => {
   const endpoint = 'https://api.thegraph.com/subgraphs/name/rentft/rentftv1';
 
   // Create an scoped async function in the hook
-  const getProduct = async (): Promise<void> => {
-    console.log('nftId', nftId);
+  const getProduct = useCallback(async (): Promise<void> => {
     const nftInfo = await request(endpoint, productQuery(nftId));
     setProduct(nftInfo.product);
-    console.log('productInfo', nftInfo);
-  };
+  }, [nftId]);
 
   useEffect(() => {
     getProduct();
-    // Naz: this may fail on first fetch. And since this useEffect will only call once
-    // we may never fetch the product. We need to re-fetch if we haven't fetched
-  }, [nftId]);
+  }, [getProduct]);
 
   // need to be connect with buttons
   const handleRent = async (e) => {
@@ -105,20 +101,23 @@ const Overview: React.FC<ProductProps> = () => {
             </Grid>
             <Grid item xs={12} sm={4} md={3} lg={3}>
               <List className={classes.paper}>
-                <ListItem title="ID" text="1" />
-                <ListItem title="NFT NAME" text="Не читаемый текст(" />
-                <ListItem title="Price" text="0.001 DAI" />
-                <ListItem title="Collateral" text="0.0 DAI" />
+                <ListItem title="ID" text={product?.id || '-'} />
+                <ListItem title="NFT Address" text={product?.address || '-'} />
                 <ListItem
-                  title="Rental Duration"
+                  title="Price"
+                  text={product ? `${String(product.price / 1e18)} DAI` : '-'}
+                />
+                <ListItem
+                  title="Collateral"
                   text={
-                    <>
-                      <Typography>Month min</Typography>
-                      <Typography>Month min</Typography>
-                    </>
+                    product ? `${String(product.collateral / 1e18)} DAI` : '-'
                   }
                 />
-                <ListItem title="Adress" text="THIS IS ADRESS" />
+                <ListItem
+                  title="Rental Duration"
+                  text={String(product?.duration) || '-'}
+                />
+                <ListItem title="Owner Adress" text={product?.owner || '-'} />
               </List>
             </Grid>
 
