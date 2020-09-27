@@ -103,8 +103,7 @@ export const rent = async (
   borrower: string,
   duration: number,
   nftToRentAddress: string,
-  nftToRentTokenId: string,
-  account: any
+  nftToRentTokenId: string
 ) => {
   // TODO: try catch this merhaps (all of it)
   // TODO: or perhaps, the ErrorBoundary can catch this
@@ -128,12 +127,12 @@ export const rent = async (
     .fetchNFTPriceBeforeReturn(
       `${API_NFT_PRICE_BASE_URL}${API_NFT_PRICE_RELATIVE_URL}`
     )
-    .send({ from: account });
+    .send({ from: borrower });
 
   // TODO: !!!!!!!!! HARDCODED tokenId and NftAddress
   const rentReceipt = await renft.methods
     .rent(borrower, duration, nftToRentAddress, nftToRentTokenId)
-    .send({ from: account });
+    .send({ from: borrower });
 
   return { priceFetchReceipt, rentReceipt };
 };

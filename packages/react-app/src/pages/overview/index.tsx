@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import CardMedia from '@material-ui/core/CardMedia';
 import List from '@material-ui/core/List';
-import { Typography, Container, Card, Box } from '@material-ui/core';
+import { Container, Card, Box } from '@material-ui/core';
 import { request } from 'graphql-request';
 import { useParams } from 'react-router-dom';
 import WalletContext from '../../ctx/wallet';
@@ -45,6 +45,7 @@ const Overview: React.FC<ProductProps> = () => {
   const getProduct = useCallback(async (): Promise<void> => {
     const nftInfo = await request(endpoint, productQuery(nftId));
     setProduct(nftInfo.product);
+    console.log(nftInfo.product);
   }, [nftId]);
 
   useEffect(() => {
@@ -57,11 +58,10 @@ const Overview: React.FC<ProductProps> = () => {
     if (product && wallet)
       await rent(
         web3,
-        product.borrower,
+        wallet.account || '',
         product.duration,
         product.address,
-        product.id,
-        wallet.account
+        product.id
       );
   };
 
@@ -95,8 +95,18 @@ const Overview: React.FC<ProductProps> = () => {
                 {product &&
                   product.available &&
                   product.owner !== wallet?.account && (
-                    <Button label="Rent" variant="contained" />
+                    <Button
+                      label="Rent"
+                      variant="contained"
+                      handleClick={handleRent}
+                    />
                   )}
+                {/* TODO: return only if the address rented it */}
+                <Button
+                  label="Return"
+                  variant="contained"
+                  handleClick={handleReturn}
+                />
                 <Button label="Claim Yield" variant="contained" />
               </div>
             </Grid>
