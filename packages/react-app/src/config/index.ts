@@ -22,7 +22,7 @@ import addresses from './addresses';
 // 1. await contract .methods.fetchNFTPriceBeforeReturn(url)
 // 3. await contract.methods.return(nftAddress, tokenId)
 
-const API_NFT_PRICE_BASE_URL = process.env.REACT_APP_API_NFT_PRICE_BASE_URL;
+const API_NFT_PRICE_BASE_URL = 'http://nftapi.free.beeceptor.com/';
 // default is approve our smart contract to withdraw DAI up to 21 billion tokens
 const defaultDaiApproveAmount = String(21000000000 * 1e18);
 
@@ -72,7 +72,8 @@ export const addProduct = async (
       nftToAddAddress,
       nftToAddTokenId,
       duration,
-      `${API_NFT_PRICE_BASE_URL}${API_NFT_PRICE_RELATIVE_URL}`
+      API_NFT_PRICE_BASE_URL
+      // `${API_NFT_PRICE_BASE_URL}${API_NFT_PRICE_RELATIVE_URL}`
     )
     .send({ from: account });
 };
@@ -85,6 +86,17 @@ export const addProduct = async (
 // Viraz - to remove the loop i did this to save the call and it has been tested
 // https://github.com/RENTFT/contracts/blob/master/contracts/rentft.sol#L175
 // TODO: sanity check the daiApproveAmount (i.e. that is in vicinity of k * 1e18 for all k in natural numbers)
+
+export const approve = async (web3) => {
+  const daiInstance = daiContract(web3, addresses.dai);
+
+  await daiInstance.methods.approve(
+    addresses.renft,
+    defaultDaiApproveAmount
+      ? String(defaultDaiApproveAmount)
+      : defaultDaiApproveAmount
+  );
+};
 
 /**
  * **READ CAREFULLY**
@@ -105,18 +117,6 @@ export const rent = async (
   nftToRentAddress: string,
   nftToRentTokenId: string
 ) => {
-  // TODO: try catch this merhaps (all of it)
-  // TODO: or perhaps, the ErrorBoundary can catch this
-  // user must approve our contract spending their DAI
-  const daiInstance = daiContract(web3, addresses.dai);
-
-  await daiInstance.methods.approve(
-    addresses.renft,
-    defaultDaiApproveAmount
-      ? String(defaultDaiApproveAmount)
-      : defaultDaiApproveAmount
-  );
-
   const renft = renftContract(web3);
 
   // hardcoded for now (the URL bit)
@@ -125,7 +125,8 @@ export const rent = async (
   // collateral the leaser has to pay for the NFT
   const priceFetchReceipt = await renft.methods
     .fetchNFTPriceBeforeReturn(
-      `${API_NFT_PRICE_BASE_URL}${API_NFT_PRICE_RELATIVE_URL}`
+      API_NFT_PRICE_BASE_URL
+      // `${API_NFT_PRICE_BASE_URL}${API_NFT_PRICE_RELATIVE_URL}`
     )
     .send({ from: borrower });
 
@@ -159,7 +160,8 @@ export const returnNft = async (
   // collateral the leaser has to pay for the NFT
   const priceFetchReceipt = await renft.methods
     .fetchNFTPriceBeforeReturn(
-      `${API_NFT_PRICE_BASE_URL}${API_NFT_PRICE_RELATIVE_URL}`
+      API_NFT_PRICE_BASE_URL
+      // `${API_NFT_PRICE_BASE_URL}${API_NFT_PRICE_RELATIVE_URL}`
     )
     .send({ from: account });
 

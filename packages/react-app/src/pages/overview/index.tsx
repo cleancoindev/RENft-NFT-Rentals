@@ -7,7 +7,7 @@ import { Container, Card, Box } from '@material-ui/core';
 import { request } from 'graphql-request';
 import { useParams } from 'react-router-dom';
 import WalletContext from '../../ctx/wallet';
-import { rent, returnNft } from '../../config/index';
+import { approve, rent, returnNft } from '../../config/index';
 import { productQuery, Product, ProductProps } from '../../config/graph';
 import ListItem from './ListItem';
 import Button from '../../components/Button';
@@ -55,7 +55,8 @@ const Overview: React.FC<ProductProps> = () => {
   // need to be connect with buttons
   const handleRent = async (e) => {
     e.preventDefault();
-    if (product && wallet)
+    if (product && wallet) {
+      await approve(web3);
       await rent(
         web3,
         wallet.account || '',
@@ -63,6 +64,7 @@ const Overview: React.FC<ProductProps> = () => {
         product.address,
         product.id
       );
+    }
   };
 
   const handleReturn = async (e) => {
