@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Box, Form, Input, Field, Flex, Button, Modal, Card } from 'rimble-ui';
 import { Button as MaterialButton } from '@material-ui/core';
+
+import WalletContext from '../ctx/wallet';
 
 type AddProductProps = {
   isOpen: boolean;
@@ -12,6 +14,7 @@ const AddProduct: React.FC<AddProductProps> = ({ isOpen, setIsOpen }) => {
   const [inputValue, setInputValue] = useState('');
   const [formInputValue, setFormInputValue] = useState('');
   const [duration, setDuration] = useState(0);
+  const { wallet, web3 } = useContext(WalletContext);
 
   const validateInput = (e): void => {
     e.target.parentNode.classList.add('was-validated');
@@ -47,6 +50,8 @@ const AddProduct: React.FC<AddProductProps> = ({ isOpen, setIsOpen }) => {
 
   const handleSubmit = async (e): Promise<void> => {
     e.preventDefault();
+    console.log('connector', wallet?.connector);
+    console.log('web3', web3);
     // need a way to get the web3 instance
     // await addProduct(wallet?.connector, inputValue, formInputValue, duration, wallet.account);
   };

@@ -56,18 +56,27 @@ export const daiContract: any = (web3: Web3, daiAddress: string) =>
  * @param duration
  * @param account
  */
-  export const addProduct = async (
-    web3: any,
-    nftToAddAddress: string,
-    nftToAddTokenId: string,
-    duration: number,
-    account: any,
-  ) => {
-    const nftContractInstance = nftContract(web3, nftToAddAddress);
-    const renftContractInstance = renftContract(web3);
-    await nftContractInstance.approve(addresses.renft, nftToAddTokenId).send({from : account});
-    await renftContractInstance.addProduct(nftToAddAddress, nftToAddTokenId, duration, `${API_NFT_PRICE_BASE_URL}${API_NFT_PRICE_RELATIVE_URL}`).send({from : account});
-  }
+export const addProduct = async (
+  web3: any,
+  nftToAddAddress: string,
+  nftToAddTokenId: string,
+  duration: number,
+  account: any
+) => {
+  const nftContractInstance = nftContract(web3, nftToAddAddress);
+  const renftContractInstance = renftContract(web3);
+  await nftContractInstance
+    .approve(addresses.renft, nftToAddTokenId)
+    .send({ from: account });
+  await renftContractInstance
+    .addProduct(
+      nftToAddAddress,
+      nftToAddTokenId,
+      duration,
+      `${API_NFT_PRICE_BASE_URL}${API_NFT_PRICE_RELATIVE_URL}`
+    )
+    .send({ from: account });
+};
 
 // TODO: writing this here because this I am editing it now and I recalled something
 // TODO: we are using transfer calls in the smart contract
@@ -96,8 +105,8 @@ export const rent = async (
   duration: number,
   nftToRentAddress: string,
   nftToRentTokenId: string,
-  account: any,
-  ) => {
+  account: any
+) => {
   // TODO: try catch this merhaps (all of it)
   // TODO: or perhaps, the ErrorBoundary can catch this
   // user must approve our contract spending their DAI
@@ -105,7 +114,9 @@ export const rent = async (
 
   await daiContract.methods.approve(
     addresses.renft,
-    defaultDaiApproveAmount ? String(defaultDaiApproveAmount) : defaultDaiApproveAmount
+    defaultDaiApproveAmount
+      ? String(defaultDaiApproveAmount)
+      : defaultDaiApproveAmount
   );
 
   const renft = renftContract(web3);
@@ -118,12 +129,12 @@ export const rent = async (
     .fetchNFTPriceBeforeReturn(
       `${API_NFT_PRICE_BASE_URL}${API_NFT_PRICE_RELATIVE_URL}`
     )
-    .send({from: account});
+    .send({ from: account });
 
   // TODO: !!!!!!!!! HARDCODED tokenId and NftAddress
   const rentReceipt = await renft.methods
     .rent(borrower, duration, nftToRentAddress, nftToRentTokenId)
-    .send({from: account});
+    .send({ from: account });
 
   return { priceFetchReceipt, rentReceipt };
 };
@@ -140,7 +151,7 @@ export const returnNft = async (
   web3: Web3,
   nftToReturnAddress: string,
   nftToReturnTokenId: string,
-  account: any,
+  account: any
 ) => {
   const renft = renftContract(web3);
 
@@ -152,11 +163,11 @@ export const returnNft = async (
     .fetchNFTPriceBeforeReturn(
       `${API_NFT_PRICE_BASE_URL}${API_NFT_PRICE_RELATIVE_URL}`
     )
-    .send({from: account});
+    .send({ from: account });
 
   const returnNftReceipt = await renft.methods
     .returnNFT(nftToReturnAddress, nftToReturnTokenId)
-    .send({from: account});
+    .send({ from: account });
 
   return { priceFetchReceipt, returnNftReceipt };
 };

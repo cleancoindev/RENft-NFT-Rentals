@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { Box } from '@material-ui/core';
 import { useWallet } from 'use-wallet';
@@ -11,9 +11,10 @@ import NavBar from './components/Navbar';
 
 const App: React.FC = () => {
   const wallet = useWallet<'injected'>();
+  const [web3, setWeb3] = useState();
 
   return (
-    <WalletContext.Provider value={{ wallet }}>
+    <WalletContext.Provider value={{ wallet, web3, setWeb3 }}>
       <NavBar />
 
       <Switch>

@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 
 const NavBar: React.FC = () => {
   const classes = useStyles();
-  const { wallet } = useContext(WalletContext);
+  const { wallet, setWeb3 } = useContext(WalletContext);
   const [leaseModalOpen, setLeaseModalOpen] = useState<boolean>(false);
 
   const connectWallet = useCallback(() => {
@@ -39,6 +39,7 @@ const NavBar: React.FC = () => {
     }
     wallet.connect('injected');
   }, [wallet]);
+
   // const disconnectWallet = useCallback((): void => wallet.reset(), [wallet]);
   const userAddress = useCallback((): string => {
     if (!wallet || !wallet.account) {
@@ -53,6 +54,25 @@ const NavBar: React.FC = () => {
   const playSound = useCallback(async () => {
     await connectAudio.play();
   }, []);
+
+  // TODO: fix linting
+  useEffect(() => {
+    if (wallet?.status === 'connected') {
+      if ('web3' in window) {
+        // eslint-disable-next-line
+        // @ts-ignore
+        if (!window.web3.currentProvider) {
+          return;
+        }
+
+        // eslint-disable-next-line
+        // @ts-ignore
+        setWeb3(window.web3.currentProvider);
+      }
+    }
+
+    // eslint-disable-next-line
+  }, [wallet?.status, setWeb3, wallet]);
 
   const toggleModal = (): void => setLeaseModalOpen(!leaseModalOpen);
 
