@@ -95,7 +95,7 @@ export const approve = async (web3) => {
     defaultDaiApproveAmount
       ? String(defaultDaiApproveAmount)
       : defaultDaiApproveAmount
-  );
+  )
 };
 
 /**
@@ -123,12 +123,20 @@ export const rent = async (
   // this will update the price of the NFT
   // this is required so that we correctly compute the
   // collateral the leaser has to pay for the NFT
-  const priceFetchReceipt = await renft.methods
-    .fetchNFTPriceBeforeReturn(
-      API_NFT_PRICE_BASE_URL
-      // `${API_NFT_PRICE_BASE_URL}${API_NFT_PRICE_RELATIVE_URL}`
-    )
-    .send({ from: borrower });
+//   const priceFetchReceipt = await renft.methods
+//     .fetchNFTPriceBeforeReturn(
+//       API_NFT_PRICE_BASE_URL
+//       // `${API_NFT_PRICE_BASE_URL}${API_NFT_PRICE_RELATIVE_URL}`
+//     )
+//     .send({ from: borrower });
+  const daiInstance = daiContract(web3, addresses.dai);
+
+  await daiInstance.methods.approve(
+    addresses.renft,
+    defaultDaiApproveAmount
+      ? String(defaultDaiApproveAmount)
+      : defaultDaiApproveAmount
+  ).send({ from: borrower });
 
   // TODO: !!!!!!!!! HARDCODED tokenId and NftAddress
   const rentReceipt = await renft.methods
