@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -10,9 +11,13 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import CardMedia from '@material-ui/core/CardMedia';
-import { Button, Link as MaterialLink, Box } from '@material-ui/core';
+import { Link as MaterialLink, Box } from '@material-ui/core';
 
 import { allProductsQuery } from '../../config/graph';
+// import pretty2 from '../../assets/img/pretty2.svg';
+// import pretty3 from '../../assets/img/pretty3.svg';
+// import pretty4 from '../../assets/img/pretty4.svg';
+// import pretty5 from '../../assets/img/pretty5.svg';
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -44,21 +49,92 @@ export type RentItem = {
   id: string;
   name: string;
   owner: string;
-  img: string;
-  price: number;
+  available: boolean;
+  borrowedAt?: number;
+  borrower?: string;
+  img?: string;
+  price?: number;
   address: string;
-  duration: number;
-  collateral: number;
+  duration?: number;
+  collateral?: number;
 };
 
 type RentableProps = {
   rows?: RentItem[];
 };
 
+// sole purpose of these is to make the front look prettier for the purposed of the demo
+const dummyNfts: RentItem[] = [
+  {
+    name: "Nick's magestic LAND",
+    img:
+      'https://lh3.googleusercontent.com/5padW9Z6NKrjAf26AIAGj6WQZ3P3wlLsFQX28teWoNIXm4hU9EaJtzDr01oFiKyKqEe_lgIglOCrFpncE3gXvD8=s0-s1000',
+    address: '0xafeFDb5EAa5aaB9D9100D0d3ECa7cA7B18403267',
+    available: true,
+    borrowedAt: 1600973772,
+    borrower: '0xb2167eB0FB666211a00301b9D81CBBCEc82ff82a',
+    collateral: 12156213120000000000,
+    duration: 0,
+    id: '0x2',
+    owner: '0xc5D2A183bcD1ea75d34cb7392C6F1880cB36c0AF',
+    price: 155643222362000000000,
+  },
+  {
+    name: "Apoorv's crazy smart contract skillz",
+    img:
+      'https://lh3.googleusercontent.com/4n3zCEwPTaPmKVSqPwankbTLCDqVDttRt1DDGPM5ZBWxwiKRV51Ue50C8RBIsq3zMIcPuHlveZcZzZg6tEhmSoOE=s0-s1000',
+    address: '0xb2167eB0FB666211a00301b9D81CBBCEc82ff82a',
+    available: true,
+    borrowedAt: 1600973772,
+    borrower: '0xc5D2A183bcD1ea75d34cb7392C6F1880cB36c0AF',
+    collateral: 52156213120000000000,
+    duration: 0,
+    id: '0x3',
+    owner: '0xafeFDb5EAa5aaB9D9100D0d3ECa7cA7B18403267',
+    price: 933243222362000000000,
+  },
+  {
+    name: "Viraz's formidable leadership and all coding skills",
+    img:
+      'https://lh3.googleusercontent.com/h5KUERe22C5szltg8d-FslmwtGSvHQgWhoL99gUussLogJxLKtcZSLK8sBBGaTRcAgb-kUxbdikq0pJSvH3VCD9Y=s0-s1000',
+    address: '0xc5D2A183bcD1ea75d34cb7392C6F1880cB36c0AF',
+    available: true,
+    borrowedAt: 1600973772,
+    borrower: '0xb2167eB0FB666211a00301b9D81CBBCEc82ff82a',
+    collateral: 12156213120000000000,
+    duration: 0,
+    id: '0x4',
+    owner: '0xc5D2A183bcD1ea75d34cb7392C6F1880cB36c0AF',
+    price: 155643222362000000000,
+  },
+  {
+    name: 'Naz',
+    img:
+      'https://lh3.googleusercontent.com/f6lk8L3S-XzoMtobsEdbAKuoXYWdz8cmHmKMNzVQaDqLGcvrliK8Ln2qi_g2pTBDbftEB72T_L0vPy8CdTs4x2k=s0-s1000',
+    address: '0x50c3374fd62dd09F18ccc01e1c20f5dE66cD6dEA',
+    available: true,
+    borrowedAt: 1600973772,
+    borrower: '0xb2167eB0FB666211a00301b9D81CBBCEc82ff82a',
+    collateral: 12156213120000000000,
+    duration: 0,
+    id: '0x5',
+    owner: '0xc5D2A183bcD1ea75d34cb7392C6F1880cB36c0AF',
+    price: 155643222362000000000,
+  },
+];
+
+// TODO: loading spinner when useEffect kicks off the fetch
 const Rentable: React.FC<RentableProps> = () => {
   const [allProducts, setProducts] = useState<RentItem[]>();
   const classes = useStyles();
   const endpoint = 'https://api.thegraph.com/subgraphs/name/rentft/rentftv1';
+  const randoms = useState([
+    [Math.random(), Math.random()],
+    [Math.random(), Math.random()],
+    [Math.random(), Math.random()],
+    [Math.random(), Math.random()],
+    [Math.random(), Math.random()],
+  ])[0];
   useEffect(() => {
     // Create an scoped async function in the hook
     const getProducts = async (): Promise<void> => {
@@ -66,7 +142,8 @@ const Rentable: React.FC<RentableProps> = () => {
         endpoint,
         allProductsQuery
       );
-      setProducts(products);
+      // remove the spreading of the dummyNfts here in the future
+      setProducts([...products, ...dummyNfts]);
     };
     getProducts();
   }, []);
@@ -88,14 +165,18 @@ const Rentable: React.FC<RentableProps> = () => {
           </TableHead>
           <TableBody>
             {allProducts &&
-              allProducts.map((row) => (
+              allProducts.map((row, i) => (
                 <TableRow key={row.id}>
                   <TableCell component="th" scope="row">
-                    <Typography>{row.id}</Typography>
+                    <Typography>{parseInt(row.id, 16)}</Typography>
                   </TableCell>
 
                   <TableCell align="left" className={classes.minInfo}>
-                    <CardMedia className={classes.img} image={row.img} />
+                    <CardMedia
+                      component="img"
+                      className={classes.img}
+                      image={row.img}
+                    />
                     <Typography className={classes.href} noWrap variant="body2">
                       <MaterialLink href={`/overview/${row.address}`}>
                         {row.address}
@@ -105,7 +186,10 @@ const Rentable: React.FC<RentableProps> = () => {
 
                   <TableCell align="left" className={classes.cell}>
                     <Typography color="primary" variant="body2">
-                      {row.price} DAI
+                      {/* TODO: my brain does not work anymore. double type conversiosn bonanza */}
+                      {row.price &&
+                        parseFloat(String(row.price / 1e18)).toFixed(2)}{' '}
+                      DAI
                     </Typography>
                   </TableCell>
 
@@ -120,20 +204,33 @@ const Rentable: React.FC<RentableProps> = () => {
                   </TableCell>
 
                   <TableCell align="left" className={classes.cell}>
-                    <Typography variant="subtitle2">MIN</Typography>
-                    <Typography variant="subtitle2">MAX</Typography>
+                    {/* TODO: hardcoded dates */}
+                    <Typography variant="subtitle2">
+                      MIN: {Math.ceil(10 * randoms[i][0])} day
+                    </Typography>
+                    <Typography variant="subtitle2">
+                      MAX: {Math.ceil(10 * randoms[i][1])} month
+                    </Typography>
                   </TableCell>
 
                   <TableCell align="left" className={classes.cell}>
                     <Typography color="secondary" variant="body2">
-                      {row.collateral} DAI
+                      {row.collateral &&
+                        parseFloat(String(row.collateral / 1e18)).toFixed(
+                          2
+                        )}{' '}
+                      DAI
                     </Typography>
                   </TableCell>
 
                   <TableCell align="right">
-                    <Button component="a" variant="outlined" href="#">
+                    <Typography
+                      variant="overline"
+                      component={Link}
+                      to={`/overview/${row.address}`}
+                    >
                       View
-                    </Button>
+                    </Typography>
                   </TableCell>
                 </TableRow>
               ))}

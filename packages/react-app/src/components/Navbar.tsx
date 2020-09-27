@@ -1,4 +1,4 @@
-import React, { useCallback, useContext } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -12,6 +12,7 @@ import { MetaMaskButton, Blockie, Loader } from 'rimble-ui';
 import WalletContext from '../ctx/wallet';
 import Button from './Button';
 import { connectAudio } from '../decorators';
+import AddProduct from './AddProduct';
 
 const useStyles = makeStyles((theme) => ({
   app: { boxShadow: 'none', display: 'flex' },
@@ -30,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
 const NavBar: React.FC = () => {
   const classes = useStyles();
   const { wallet } = useContext(WalletContext);
+  const [leaseModalOpen, setLeaseModalOpen] = useState<boolean>(false);
 
   const connectWallet = useCallback(() => {
     if (!wallet) {
@@ -85,7 +87,18 @@ const NavBar: React.FC = () => {
 
             <Box marginLeft="auto">
               <Box display="flex" flexDirection="row">
-                <Button variant="outlined" label="List NFTs" />
+                <Button
+                  variant="outlined"
+                  label="LEASE YOUR NFT"
+                  handleClick={() => setLeaseModalOpen(!leaseModalOpen)}
+                />
+
+                {leaseModalOpen && (
+                  <AddProduct
+                    isOpen={leaseModalOpen}
+                    setIsOpen={setLeaseModalOpen}
+                  />
+                )}
 
                 {wallet?.status === 'disconnected' && (
                   <MetaMaskButton.Outline onClick={connectWallet}>

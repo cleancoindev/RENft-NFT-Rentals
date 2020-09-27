@@ -35,6 +35,7 @@ const Overview: React.FC = () => {
   // Naz: Yup. Just the skeleton, the barebones for now
   const { nftId } = useParams();
   const [product, setProduct] = useState<Product>();
+  console.debug(product);
   // dummy value this will coming from the state or path
   const classes = useStyles();
   const endpoint = 'https://api.thegraph.com/subgraphs/name/rentft/rentftv1';
@@ -55,7 +56,6 @@ const Overview: React.FC = () => {
   // FYI the price would be in wei and needs to be converted to eth form
   return (
     <Container>
-      <Box>{JSON.stringify(product)}</Box>
       <Card raised>
         <Box p={2}>
           <Grid container spacing={2} className={classes.root}>
