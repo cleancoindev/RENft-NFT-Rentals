@@ -41,12 +41,15 @@ const Overview: React.FC<ProductProps> = () => {
   const classes = useStyles();
   const endpoint = 'https://api.thegraph.com/subgraphs/name/rentft/rentftv1';
 
+  // Create an scoped async function in the hook
+  const getProduct = async (): Promise<void> => {
+    console.log('nftId', nftId);
+    const nftInfo = await request(endpoint, productQuery(nftId));
+    setProduct(nftInfo.product);
+    console.log('productInfo', nftInfo);
+  };
+
   useEffect(() => {
-    // Create an scoped async function in the hook
-    const getProduct = async (): Promise<void> => {
-      const nftInfo = await request(endpoint, productQuery(nftId));
-      setProduct(nftInfo.product);
-    };
     getProduct();
     // Naz: this may fail on first fetch. And since this useEffect will only call once
     // we may never fetch the product. We need to re-fetch if we haven't fetched

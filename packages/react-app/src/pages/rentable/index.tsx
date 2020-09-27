@@ -165,7 +165,7 @@ const Rentable: React.FC<RentableProps> = () => {
           </TableHead>
           <TableBody>
             {allProducts &&
-              allProducts.map((row, i) => (
+              allProducts.map((row) => (
                 <TableRow key={row.id}>
                   <TableCell component="th" scope="row">
                     <Typography>{parseInt(row.id, 16)}</Typography>
@@ -178,9 +178,7 @@ const Rentable: React.FC<RentableProps> = () => {
                       image={row.img}
                     />
                     <Typography className={classes.href} noWrap variant="body2">
-                      <MaterialLink href={`/overview/${row.address}`}>
-                        {row.address}
-                      </MaterialLink>
+                      {row.address}
                     </Typography>
                   </TableCell>
 
@@ -219,10 +217,11 @@ const Rentable: React.FC<RentableProps> = () => {
                   </TableCell>
 
                   <TableCell align="right">
+                    {/* TODO: hack for now. Just returns an output for 0x0. In the future we will have same resolving like in etherscan. i.e. nftAddress?a=tokenId */}
                     <Typography
                       variant="overline"
                       component={Link}
-                      to={`/overview/${row.address}`}
+                      to={`/overview/${row.id}`}
                     >
                       View
                     </Typography>
