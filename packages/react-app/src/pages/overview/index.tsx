@@ -7,7 +7,7 @@ import { Container, Card, Box } from '@material-ui/core';
 import { request } from 'graphql-request';
 import { useParams } from 'react-router-dom';
 import WalletContext from '../../ctx/wallet';
-import { ownersClaim, rent, returnNft } from '../../config/index';
+import { ownerClaim, rent, returnNft } from '../../config/index';
 import { productQuery, Product, ProductProps } from '../../config/graph';
 import ListItem from './ListItem';
 import Button from '../../components/Button';
@@ -74,8 +74,8 @@ const Overview: React.FC<ProductProps> = () => {
 
   const claimYield = async (e) => {
     e.preventDefault();
-    if (product && wallet)
-      await ownersClaim(web3, product.address, product.id, wallet.account);
+    // if (product && wallet)
+    // await ownerClaim(web3, product.address, product.id, wallet.account);
   };
 
   // add the dynamic values here stored in userProfile object check graph dashboard or github schema to see what data is available
