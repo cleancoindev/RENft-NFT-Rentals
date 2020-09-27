@@ -6,6 +6,10 @@ To start the front either follow the vercel link on this page: https://web-two-i
 
 or if you are feeling adventurous
 
+## Contracts
+- [RenFT](https://kovan.etherscan.io/address/0xb2c98f7f573bbf653972f030766e36138c82f4a2)
+- [Sample NFT For minting and testing on Kovan](https://kovan.etherscan.io/address/0x465DCa9995D6c2a81A9Be80fBCeD5a770dEE3daE#tokentxnsErc721)
+
 ```bash
 npm install -g yarn
 ```
