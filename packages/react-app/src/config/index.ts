@@ -1,9 +1,6 @@
-import abis from "./abis";
-import addresses from "./addresses";
-
-// types
-import Web3 from "web3/types";
-import { Contract } from "web3-eth-contract";
+import Web3 from 'web3/types';
+import abis from './abis';
+import addresses from './addresses';
 
 // All contract calls in sequence required
 // 1. const contract = web3.eth.Contract(renftabi, renftaddress)
@@ -30,8 +27,8 @@ const API_NFT_PRICE_BASE_URL = process.env.REACT_APP_API_NFT_PRICE_BASE_URL;
 const defaultDaiApproveAmount = String(21000000000 * 1e18);
 
 // this needs to be removed
-export const NftAddress = "0x527E95AE7B40FCBD60D67DE1D7E1C6A7CB14D42B";
-export const tokenId = "12316";
+export const NftAddress = '0x527E95AE7B40FCBD60D67DE1D7E1C6A7CB14D42B';
+export const tokenId = '12316';
 
 // TODO: when we go live, we simply change the API_NFT_PRICE_BASE_URL for opensea.io and then this uses url "match"
 // on the front-end and we easily get the prices for the NFTs. (if available)
@@ -41,13 +38,12 @@ const API_NFT_PRICE_RELATIVE_URL = `/api/v1/asset/${NftAddress}/${tokenId}/`;
 
 // NOTE=> Using any since was getting an error approve does not exist on type Contract
 export const renftContract: any = (web3: Web3) => {
-    return new web3.eth.Contract(abis.renft, addresses.renft);
-}
-  
+  return new web3.eth.Contract(abis.renft, addresses.renft);
+};
+
 export const nftContract: any = (web3: Web3, nftAddress: string) => {
-    return new web3.eth.Contract(abis.erc721, nftAddress);
-}
-  
+  return new web3.eth.Contract(abis.erc721, nftAddress);
+};
 
 export const daiContract: any = (web3: Web3, daiAddress: string) =>
   new web3.eth.Contract(abis.erc20, daiAddress);
@@ -177,26 +173,23 @@ export const returnNft = async (
 
 /**
  * to be called by owner to claim the interest and principal in case of a fraud
- * 
+ *
  * @param nftToReturnAddress <- IGNORED WHEN FETCHING PRICE. not used right now because OpenSea & Aave do not share any testnets. We have mocked the OpenSea API responses, so when we deploy to mainnet, all we have to do is change the BASE_URL env var
  * @param nftToReturnTokenId
  */
 export const ownerClaim = async (
-    web3: Web3,
-    nftToReturnAddress: string,
-    nftToReturnTokenId: string,
-    account: any
-  ) => {
-    const renft = renftContract(web3);
+  web3: Web3,
+  nftToReturnAddress: string,
+  nftToReturnTokenId: string,
+  account: any
+) => {
+  const renft = renftContract(web3);
 
-    const claimReceipt = await renft.methods
-      .redeemCollateral(
-        nftToReturnAddress, nftToReturnTokenId
-      )
-      .send({ from: account });
-  
-    return { claimReceipt };
-  };
+  const claimReceipt = await renft.methods
+    .redeemCollateral(nftToReturnAddress, nftToReturnTokenId)
+    .send({ from: account });
+
+  return { claimReceipt };
+};
 
 export { abis, addresses };
-export * from "./addresses";

@@ -97,6 +97,7 @@ const Overview: React.FC<ProductProps> = () => {
                   product.owner !== wallet?.account && (
                     <Button label="Rent" variant="contained" />
                   )}
+                <Button label="Claim Yield" variant="contained" />
               </div>
             </Grid>
             <Grid item xs={12} sm={4} md={3} lg={3}>

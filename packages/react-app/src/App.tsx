@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { Box } from '@material-ui/core';
+import { Box, Button } from '@material-ui/core';
 import { useWallet } from 'use-wallet';
 
 import WalletContext from './ctx/wallet';
