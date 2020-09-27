@@ -54,6 +54,8 @@ const NavBar: React.FC = () => {
     await connectAudio.play();
   }, []);
 
+  const toggleModal = (): void => setLeaseModalOpen(!leaseModalOpen);
+
   return (
     <AppBar className={classes.app} position="static" color="transparent">
       <Container>
@@ -90,7 +92,7 @@ const NavBar: React.FC = () => {
                 <Button
                   variant="outlined"
                   label="LEASE YOUR NFT"
-                  handleClick={() => setLeaseModalOpen(!leaseModalOpen)}
+                  handleClick={toggleModal}
                 />
 
                 {leaseModalOpen && (

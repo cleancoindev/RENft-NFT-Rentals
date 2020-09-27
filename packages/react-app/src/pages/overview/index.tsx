@@ -7,7 +7,6 @@ import { Typography, Container, Card, Box } from '@material-ui/core';
 import { request } from 'graphql-request';
 import { useParams } from 'react-router-dom';
 import WalletContext from '../../ctx/wallet';
-import { rent, returnNft } from '../../../../contracts/src/index'
 
 import { productQuery, Product, ProductProps } from '../../config/graph';
 import ListItem from './ListItem';
@@ -54,17 +53,17 @@ const Overview: React.FC<ProductProps> = () => {
   }, [nftId]);
 
   // need to be connect with buttons
-  const handleRent = async (e) => {
-    e.preventDefault();
-    // need a way to get the web3 instance
-    // await rent(wallet?.connector, product.borrower, product.duration, product.address, product.id, wallet.account);
-  };
+  // const handleRent = async (e) => {
+  // e.preventDefault();
+  // need a way to get the web3 instance
+  // await rent(wallet?.connector, product.borrower, product.duration, product.address, product.id, wallet.account);
+  // };
 
-  const handleReturn = async (e) => {
-    e.preventDefault();
-    // need a way to get the web3 instance
-    // await returnNft(wallet?.connector,  product.address, product.id, wallet.account);
-  };
+  // const handleReturn = async (e) => {
+  // e.preventDefault();
+  // need a way to get the web3 instance
+  // await returnNft(wallet?.connector,  product.address, product.id, wallet.account);
+  // };
 
   // add the dynamic values here stored in userProfile object check graph dashboard or github schema to see what data is available
   // due to list item unable to add but it will be like product.id, product.price etc..
@@ -81,12 +80,17 @@ const Overview: React.FC<ProductProps> = () => {
                   className={classes.img}
                   image="https://image.freepik.com/free-vector/close-up-of-cool-cat_36380-133.jpg"
                 />
-                {product && product.borrower == wallet?.account && !product.available && product.owner != wallet?.account &&
-                 <Button label="Return" variant="outlined" />
-                }
-                {product && product.available && product.owner != wallet?.account && <Button label="Rent" variant="contained" />}
-                
-               
+                {product &&
+                  product.borrower === wallet?.account &&
+                  !product.available &&
+                  product.owner !== wallet?.account && (
+                    <Button label="Return" variant="outlined" />
+                  )}
+                {product &&
+                  product.available &&
+                  product.owner !== wallet?.account && (
+                    <Button label="Rent" variant="contained" />
+                  )}
               </div>
             </Grid>
             <Grid item xs={12} sm={4} md={3} lg={3}>

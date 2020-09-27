@@ -1,9 +1,6 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Form, Input, Field, Flex, Button, Modal, Card } from 'rimble-ui';
 import { Button as MaterialButton } from '@material-ui/core';
-import { addProduct } from '../../../contracts/src/index'
-import Web3 from "web3/types";
-import WalletContext from '../ctx/wallet';
 
 type AddProductProps = {
   isOpen: boolean;
@@ -11,32 +8,31 @@ type AddProductProps = {
 };
 
 const AddProduct: React.FC<AddProductProps> = ({ isOpen, setIsOpen }) => {
-  
   const [validated, setValidated] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [formInputValue, setFormInputValue] = useState('');
   const [duration, setDuration] = useState(0);
-  const { wallet } = useContext(WalletContext);
-  const validateInput = (e) => {
+
+  const validateInput = (e): void => {
     e.target.parentNode.classList.add('was-validated');
   };
 
-  const handleInput = (e) => {
+  const handleInput = (e): void => {
     setInputValue(e.target.value);
     validateInput(e);
   };
 
-  const handleFormInput = (e) => {
+  const handleFormInput = (e): void => {
     setFormInputValue(e.target.value);
     validateInput(e);
   };
 
-  const handleDuration = (e) => {
+  const handleDuration = (e): void => {
     setDuration(e.target.value);
     validateInput(e);
   };
 
-  const validateForm = () => {
+  const validateForm = (): void => {
     // Perform advanced validation here
     if (inputValue.length > 0) {
       setValidated(true);
@@ -49,11 +45,13 @@ const AddProduct: React.FC<AddProductProps> = ({ isOpen, setIsOpen }) => {
     validateForm();
   });
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e): Promise<void> => {
     e.preventDefault();
     // need a way to get the web3 instance
     // await addProduct(wallet?.connector, inputValue, formInputValue, duration, wallet.account);
   };
+
+  const closeModal = (): void => setIsOpen(false);
 
   return (
     <Modal isOpen={isOpen}>
@@ -67,7 +65,7 @@ const AddProduct: React.FC<AddProductProps> = ({ isOpen, setIsOpen }) => {
           right={0}
           mt={3}
           mr={3}
-          onClick={() => setIsOpen(false)}
+          onClick={closeModal}
         />
         <Box p={4}>
           <Box>
@@ -102,7 +100,11 @@ const AddProduct: React.FC<AddProductProps> = ({ isOpen, setIsOpen }) => {
                   </Field>
                 </Box>
                 <Box width={[1, 1, 1 / 2]} px={3}>
-                  <Field label="Duration (in days)" validated={validated} width={1}>
+                  <Field
+                    label="Duration (in days)"
+                    validated={validated}
+                    width={1}
+                  >
                     <Form.Input
                       type="number"
                       required // set required attribute to use brower's HTML5 input validation
@@ -123,20 +125,6 @@ const AddProduct: React.FC<AddProductProps> = ({ isOpen, setIsOpen }) => {
               </MaterialButton>
             </Form>
           </Box>
-          {/* <Card my={4}>
-        <Heading as="h4">Form values</Heading>
-        <Text>Valid form: {validated.toString()}</Text>
-        <Text>Email value: {inputValue}</Text>
-        <Text>Select value: {selectValue}</Text>
-        <Text>Checkbox value: {checkboxValue.toString()}</Text>
-        <Text>Radio value: {radioValue}</Text>
-        <Checkbox
-          label="Toggle Form Validation"
-          value={formValidated}
-          onChange={(e) => setFormValidated(!formValidated)}
-        />
-        <Text>Form validated: {formValidated.toString()}</Text>
-      </Card> */}
         </Box>
       </Card>
     </Modal>

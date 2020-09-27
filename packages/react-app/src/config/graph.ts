@@ -34,7 +34,7 @@ export type Profile = {
   id: string;
   nftRented: Product[];
   nftOwned: Product[];
-}
+};
 export type ProfileProps = {
   user?: Profile;
 };
