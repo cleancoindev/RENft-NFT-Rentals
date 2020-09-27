@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Box, Form, Input, Field, Flex, Button, Modal, Card } from 'rimble-ui';
 import { Button as MaterialButton } from '@material-ui/core';
-
+import { addProduct } from '../config/index'
 import WalletContext from '../ctx/wallet';
 
 type AddProductProps = {
@@ -53,7 +53,7 @@ const AddProduct: React.FC<AddProductProps> = ({ isOpen, setIsOpen }) => {
     console.log('connector', wallet?.connector);
     console.log('web3', web3);
     // need a way to get the web3 instance
-    // await addProduct(wallet?.connector, inputValue, formInputValue, duration, wallet.account);
+    if (wallet) await addProduct(web3, inputValue, formInputValue, duration, wallet.account);
   };
 
   const closeModal = (): void => setIsOpen(false);

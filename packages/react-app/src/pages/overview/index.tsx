@@ -7,7 +7,7 @@ import { Typography, Container, Card, Box } from '@material-ui/core';
 import { request } from 'graphql-request';
 import { useParams } from 'react-router-dom';
 import WalletContext from '../../ctx/wallet';
-
+import { rent, returnNft} from '../../config/index'
 import { productQuery, Product, ProductProps } from '../../config/graph';
 import ListItem from './ListItem';
 import Button from '../../components/Button';
@@ -35,7 +35,7 @@ const Overview: React.FC<ProductProps> = () => {
   // Viraz: Note -> path has to include the id i.e overview/1
   // Naz: Yup. Just the skeleton, the barebones for now
   const { nftId } = useParams();
-  const { wallet } = useContext(WalletContext);
+  const { wallet, web3 } = useContext(WalletContext);
   const [product, setProduct] = useState<Product>();
   // dummy value this will coming from the state or path
   const classes = useStyles();
@@ -52,18 +52,17 @@ const Overview: React.FC<ProductProps> = () => {
     // we may never fetch the product. We need to re-fetch if we haven't fetched
   }, [nftId]);
 
-  // need to be connect with buttons
-  // const handleRent = async (e) => {
-  // e.preventDefault();
-  // need a way to get the web3 instance
-  // await rent(wallet?.connector, product.borrower, product.duration, product.address, product.id, wallet.account);
-  // };
+ // need to be connect with buttons
+  const handleRent = async (e) => {
+  e.preventDefault();
+  if (product && wallet) await rent(web3, product.borrower, product.duration, product.address, product.id, wallet.account);
 
-  // const handleReturn = async (e) => {
-  // e.preventDefault();
-  // need a way to get the web3 instance
-  // await returnNft(wallet?.connector,  product.address, product.id, wallet.account);
-  // };
+  };
+
+  const handleReturn = async (e) => {
+  e.preventDefault();
+  if (product && wallet) await returnNft(web3,  product.address, product.id, wallet.account);
+  };
 
   // add the dynamic values here stored in userProfile object check graph dashboard or github schema to see what data is available
   // due to list item unable to add but it will be like product.id, product.price etc..

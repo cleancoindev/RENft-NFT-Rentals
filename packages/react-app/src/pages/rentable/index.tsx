@@ -203,12 +203,11 @@ const Rentable: React.FC<RentableProps> = () => {
                     </Typography>
                   </TableCell>
                   <TableCell align="left" className={classes.cell}>
-                    {/* TODO: hardcoded dates */}
-                    <Typography variant="subtitle2">
-                      MIN: {Math.ceil(10 * randoms[i][0])} day
-                    </Typography>
-                    <Typography variant="subtitle2">
-                      MAX: {Math.ceil(10 * randoms[i][1])} month
+                    <Typography
+                      component="a"
+                      className={classes.href}
+                    >
+                      {row.duration} Days
                     </Typography>
                   </TableCell>
 

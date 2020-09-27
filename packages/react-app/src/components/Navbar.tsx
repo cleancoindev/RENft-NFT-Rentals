@@ -8,7 +8,7 @@ import Container from '@material-ui/core/Container';
 import Divider from '@material-ui/core/Divider';
 import { Box, Grid, Link as MaterialLink } from '@material-ui/core';
 import { MetaMaskButton, Blockie, Loader } from 'rimble-ui';
-
+import Web3 from 'web3';
 import WalletContext from '../ctx/wallet';
 import Button from './Button';
 import { connectAudio } from '../decorators';
@@ -32,7 +32,6 @@ const NavBar: React.FC = () => {
   const classes = useStyles();
   const { wallet, setWeb3 } = useContext(WalletContext);
   const [leaseModalOpen, setLeaseModalOpen] = useState<boolean>(false);
-
   const connectWallet = useCallback(() => {
     if (!wallet) {
       return;
@@ -58,6 +57,16 @@ const NavBar: React.FC = () => {
   // TODO: fix linting
   useEffect(() => {
     if (wallet?.status === 'connected') {
+    //   if (window.ethereum) {
+    //     const web3 = new Web3(window.ethereum)
+    //     await window.ethereum.enable()
+    //     this.setState({web3})
+    // } else if (window.web3) {
+    //     const web3 = new Web3(window.web3.currentProvider)
+    //     this.setState({web3})
+    // } else {
+    //     window.alert('Non-Ethereum browser detected. You should consider trying MetaMask!')
+    // }
       if ('web3' in window) {
         // eslint-disable-next-line
         // @ts-ignore
@@ -67,7 +76,8 @@ const NavBar: React.FC = () => {
 
         // eslint-disable-next-line
         // @ts-ignore
-        setWeb3(window.web3.currentProvider);
+        setWeb3(new Web3(window.web3.currentProvider));
+      
       }
     }
 
