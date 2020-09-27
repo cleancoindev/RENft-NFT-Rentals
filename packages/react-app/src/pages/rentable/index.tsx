@@ -203,10 +203,7 @@ const Rentable: React.FC<RentableProps> = () => {
                     </Typography>
                   </TableCell>
                   <TableCell align="left" className={classes.cell}>
-                    <Typography
-                      component="a"
-                      className={classes.href}
-                    >
+                    <Typography component="a" className={classes.href}>
                       {row.duration} Days
                     </Typography>
                   </TableCell>
@@ -225,7 +222,7 @@ const Rentable: React.FC<RentableProps> = () => {
                     <Typography
                       variant="overline"
                       component={Link}
-                      to={`/overview/${row.id}`}
+                      to={`/overview/${row.address}`}
                     >
                       View
                     </Typography>
